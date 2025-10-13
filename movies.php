@@ -54,7 +54,7 @@
             </div>
             <div class="hidden md:flex items-center space-x-8">
                 <a href="index.php" class="text-white hover:text-purple-300">Home</a>
-                <a href="#" class="text-white font-bold">Movies</a>
+                <a href="#" class="text-white hover:text-purple-300">Movies</a>
                 <a href="about.php" class="text-white font-bold">About Us</a>
                 <a href="login.php" class="text-white hover:text-purple-300">Login</a>
             </div>
