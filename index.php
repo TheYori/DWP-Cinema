@@ -181,7 +181,7 @@
         <!-- Movie 1 -->
         <div class="purple-dark rounded-lg shadow-xl overflow-hidden mb-10">
             <div class="md:flex">
-                <div class="md:w-1/3">
+                <div class="md:w-1/4">
                     <img src="http://static.photos/horror/640x360/666" alt="Movie Poster" class="w-full h-full object-cover">
                 </div>
                 <div class="md:w-2/3 p-6">
@@ -211,7 +211,7 @@
         <!-- Movie 2 -->
         <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
             <div class="md:flex">
-                <div class="md:w-1/3">
+                <div class="md:w-1/4">
                     <img src="http://static.photos/horror/640x360/42" alt="Movie Poster" class="w-full h-full object-cover">
                 </div>
                 <div class="md:w-2/3 p-6">
