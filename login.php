@@ -41,14 +41,15 @@
     <div class="container mx-auto px-6 py-3">
         <div class="flex items-center justify-between">
             <div class="flex items-center space-x-8">
-                <a href="index.html" class="flex items-center">
+                <a href="index.php" class="flex items-center">
                     <span class="horror-font text-3xl blood-red glow">Midnight Scream</span>
                 </a>
             </div>
             <div class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-white hover:text-purple-300">Home</a>
-                <a href="movies.html" class="text-white hover:text-purple-300">Movies</a>
-                <a href="about.html" class="text-white hover:text-purple-300">About Us</a>
+                <a href="index.php" class="text-white hover:text-purple-300">Home</a>
+                <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
+                <a href="about.php" class="text-white hover:text-purple-300">About Us</a>
+                <a href="#" class="text-white hover:text-purple-300">Login</a>
             </div>
             <div class="md:hidden">
                 <button class="text-white focus:outline-none">
@@ -77,7 +78,7 @@
                     Login <i data-feather="log-in" class="inline ml-2"></i>
                 </button>
                 <div class="text-center">
-                    <a href="register.html" class="text-purple-300 hover:text-purple-200">
+                    <a href="register.php" class="text-purple-300 hover:text-purple-200">
                         Don't have an account? Register here
                     </a>
                 </div>
@@ -98,7 +99,7 @@
                 <a href="#" class="hover:text-purple-300">Privacy Policy</a>
                 <a href="#" class="hover:text-purple-300">Terms of Service</a>
                 <a href="#" class="hover:text-purple-300">Contact Us</a>
-                <a href="admin/login.html" class="hover:text-purple-300">Admin</a>
+                <a href="admin/login.php" class="hover:text-purple-300">Admin</a>
             </div>
         </div>
     </div>

@@ -49,7 +49,7 @@
                 <a href="index.php" class="text-white hover:text-purple-300">Home</a>
                 <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
                 <a href="about.php" class="text-white hover:text-purple-300">About Us</a>
-                <a href="profile.php" class="text-white hover:text-purple-300">Profile</a>
+                <a href="#" class="text-white hover:text-purple-300">Profile</a>
             </div>
             <div class="md:hidden">
                 <button class="text-white focus:outline-none">
