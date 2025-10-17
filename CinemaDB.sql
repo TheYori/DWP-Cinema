@@ -66,6 +66,9 @@ CREATE TABLE Halls(
     hall_name VARCHAR(50) NOT NULL
 );
 
+INSERT INTO Halls (hall_name) VALUES ('Grimm Hall')
+INSERT INTO Halls (hall_name) VALUES ('Wendigo Den')
+
 CREATE TABLE Seats(
     seat_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     seat_name VARCHAR(20) NOT NULL,
