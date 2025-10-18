@@ -4,7 +4,7 @@
     $session = new AdminSessionHandler();
     //look for logout keyword and log the user out if == 1
     if (isset($_GET['logout']) && $_GET['logout'] == 1) {
-        $logout = new Logoutor();
+        $logout = new Logout();
         $msg = "You are now logged out.";
     }elseif ($session->logged_in()) {
         $redirect = new Redirector("company.php");

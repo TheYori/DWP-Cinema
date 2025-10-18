@@ -59,9 +59,9 @@ $session->confirm_logged_in()
             <h1>Welcome to the backend: <strong><?php echo $_SESSION['username']; ?></strong></h1>
             <div class="flex items-center space-x-4">
                 <a href="../index.php" class="hidden md:block text-white hover:text-purple-300">Back to Main Site</a>
-                <button class="moss-green hover:bg-green-900 text-white font-bold py-2 px-4 rounded transition duration-300">
+                <a href="login.php?logout=1" class="moss-green hover:bg-green-900 text-white font-bold py-2 px-4 rounded transition duration-300" >
                     Log Out <i data-feather="log-out" class="inline ml-1"></i>
-                </button>
+                </a>
             </div>
             <div class="md:hidden">
                 <button class="text-white focus:outline-none">
