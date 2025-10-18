@@ -12,7 +12,7 @@ class LoginAdmin
             $found_user = $query->fetchAll();
             if (count($found_user)==1){
                 if(password_verify($pass, $found_user[0]['admin_password'])){
-                    $_SESSION['admin_id'] = $found_user[0]['id'];
+                    $_SESSION['admin_id'] = $found_user[0]['admin_id'];
                     $_SESSION['username'] = $found_user[0]['username'];
                     $redirect = new Redirector("company.php");
                 } else {

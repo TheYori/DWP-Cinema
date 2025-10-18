@@ -1,3 +1,11 @@
+<?php
+spl_autoload_register(function ($class)
+{include"../classes/".$class.".php";});
+//check of the user is logged in:
+$session = new AdminSessionHandler();
+$session->confirm_logged_in()
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,6 +56,7 @@
                     <span class="horror-font text-3xl blood-red glow">Midnight Scream</span>
                 </a>
             </div>
+            <h1>Welcome to the backend: <strong><?php echo $_SESSION['username']; ?></strong></h1>
             <div class="flex items-center space-x-4">
                 <a href="../index.php" class="hidden md:block text-white hover:text-purple-300">Back to Main Site</a>
                 <button class="moss-green hover:bg-green-900 text-white font-bold py-2 px-4 rounded transition duration-300">
