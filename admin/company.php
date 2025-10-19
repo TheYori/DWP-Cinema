@@ -3,7 +3,53 @@ spl_autoload_register(function ($class)
 {include"../classes/".$class.".php";});
 //check of the user is logged in:
 $session = new AdminSessionHandler();
-$session->confirm_logged_in()
+$session->confirm_logged_in();
+
+// Create CRUD object
+$companyCRUD = new CompanyCRUD();
+$companyData = $companyCRUD->getAll();
+
+// Handle form submission
+$message = "";
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data_key = trim($_POST['info-type']);
+    $key_value = trim($_POST['info-data']);
+
+    if (!empty($data_key) && !empty($key_value)) {
+        $created = $companyCRUD->create($data_key, $key_value);
+
+        if ($created) {
+            // Optional: reload page to refresh data and clear form
+            header("Location: company.php?success=1");
+            exit;
+        } else {
+            $message = "<p class='text-red-400 font-semibold mt-4'>Failed to save information. Please try again.</p>";
+        }
+    } else {
+        $message = "<p class='text-yellow-400 font-semibold mt-4'>Both fields are required.</p>";
+    }
+}
+
+// Fetch all company info (refresh list after adding)
+$companyData = $companyCRUD->getAll();
+
+// Optional: show success message after redirect
+if (isset($_GET['success'])) {
+    $message = "<p class='text-green-400 font-semibold mt-4'>Company information successfully added!</p>";
+}
+
+// Handle delete action
+if (isset($_GET['delete'])) {
+    $id = (int) $_GET['delete']; // make sure it’s an integer for safety
+    if ($companyCRUD->delete($id)) {
+        header("Location: company.php?deleted=1");
+        exit;
+    } else {
+        header("Location: company.php?error=1");
+        exit;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -99,16 +145,20 @@ $session->confirm_logged_in()
         <!-- Add Company Info Form -->
         <div id="add-section" class="purple-dark rounded-lg shadow-xl p-8">
             <h2 class="horror-font text-3xl blood-red mb-6">Add New Company Information</h2>
-            <form class="space-y-6">
+            <?php if (!empty($message)) echo $message; ?>
+            <form method="POST" class="space-y-6">
                 <div>
                     <label for="info-type" class="block mb-2">Information Type</label>
-                    <input type="text" id="info-type" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <input type="text" name="info-type" id="info-type" required
+                           class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
                     <label for="info-data" class="block mb-2">Information Data</label>
-                    <textarea id="info-data" rows="4" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+                    <textarea name="info-data" id="info-data" rows="4" required
+                              class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
                 </div>
-                <button type="submit" class="moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
+                <button type="submit"
+                        class="moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
                     Save Information <i data-feather="save" class="inline ml-2"></i>
                 </button>
             </form>
@@ -126,43 +176,33 @@ $session->confirm_logged_in()
                         <th class="pb-4">Actions</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr class="border-b border-gray-700">
-                        <td class="py-4">Address</td>
-                        <td class="py-4">666 Cemetery Lane, New York, NY 10001</td>
-                        <td class="py-4">
-                            <a href="edit-company.php?id=1" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
-                                <i data-feather="edit" class="mr-1"></i> Edit
-                            </a>
-                            <button class="text-red-400 hover:text-red-300">
-                                <i data-feather="trash-2" class="mr-1"></i> Delete
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-gray-700">
-                        <td class="py-4">Contact Email</td>
-                        <td class="py-4">contact@midnightscream.com</td>
-                        <td class="py-4">
-                            <a href="edit-company.php?id=2" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
-                                <i data-feather="edit" class="mr-1"></i> Edit
-                            </a>
-                            <button class="text-red-400 hover:text-red-300">
-                                <i data-feather="trash-2" class="mr-1"></i> Delete
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="py-4">Operating Hours</td>
-                        <td class="py-4">6:00 PM - 3:00 AM Daily</td>
-                        <td class="py-4">
-                            <a href="edit-company.php?id=3" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
-                                <i data-feather="edit" class="mr-1"></i> Edit
-                            </a>
-                            <button class="text-red-400 hover:text-red-300">
-                                <i data-feather="trash-2" class="mr-1"></i> Delete
-                            </button>
-                        </td>
-                    </tr>
+                    <?php if (!empty($companyData)): ?>
+                        <?php foreach ($companyData as $company): ?>
+                            <tr class="border-b border-gray-700 hover:bg-purple-light/30 transition">
+                                <td class="py-4"><?= htmlspecialchars($company['data_key']); ?></td>
+                                <td class="py-4"><?= htmlspecialchars($company['key_value']); ?></td>
+                                <td class="py-4">
+                                    <div class="flex items-center space-x-4">
+                                        <a href="edit-company.php?id=<?= $company['key_id']; ?>"
+                                           class="flex items-center text-yellow-400 hover:text-yellow-300 transition">
+                                            <i data-feather="edit" class="mr-1"></i>
+                                            Edit
+                                        </a>
+                                        <a href="company.php?delete=<?= $company['key_id']; ?>"
+                                           onclick="return confirm('Are you sure you want to delete this entry?');"
+                                           class="flex items-center text-red-400 hover:text-red-300 transition">
+                                            <i data-feather="trash-2" class="mr-1 w-4 h-4"></i>
+                                            Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="3" class="py-4 text-gray-400 text-center">No company information found.</td>
+                        </tr>
+                    <?php endif; ?>
                     </tbody>
                 </table>
             </div>

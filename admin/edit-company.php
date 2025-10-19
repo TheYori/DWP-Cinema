@@ -3,7 +3,45 @@ spl_autoload_register(function ($class)
 {include"../classes/".$class.".php";});
 //check of the user is logged in:
 $session = new AdminSessionHandler();
-$session->confirm_logged_in()
+$session->confirm_logged_in();
+
+// Create CRUD object
+$companyCRUD = new CompanyCRUD();
+
+// Get company info by ID
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header("Location: company.php");
+    exit;
+}
+
+$id = (int) $_GET['id'];
+$company = $companyCRUD->getById($id);
+
+if (!$company) {
+    // If no record found, redirect back
+    header("Location: company.php?notfound=1");
+    exit;
+}
+
+$message = "";
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data_key = trim($_POST['info-type']);
+    $key_value = trim($_POST['info-data']);
+
+    if (!empty($data_key) && !empty($key_value)) {
+        $updated = $companyCRUD->update($id, $data_key, $key_value);
+        if ($updated) {
+            header("Location: company.php?updated=1");
+            exit;
+        } else {
+            $message = "<p class='text-red-400 font-semibold mt-4'>Failed to change the data entry</p>";
+        }
+    } else {
+        $message = "<p class='text-yellow-400 font-semibold mt-4'>Both fields are required, ya idjit...</p>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -89,14 +127,18 @@ $session->confirm_logged_in()
     <div class="container mx-auto px-6 max-w-4xl">
         <div class="purple-dark rounded-lg shadow-xl p-8">
             <h2 class="horror-font text-3xl blood-red mb-6">Edit Company Information</h2>
-            <form class="space-y-6">
+            <form method="POST" class="space-y-6">
+                <?php if (!empty($message)) echo $message; ?>
                 <div>
                     <label for="edit-info-type" class="block mb-2">Information Type</label>
-                    <input type="text" id="edit-info-type" value="Address" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <input type="text" name="info-type" id="edit-info-type"
+                           value="<?= htmlspecialchars($company['data_key']); ?>" required
+                           class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
                     <label for="edit-info-data" class="block mb-2">Information Data</label>
-                    <textarea id="edit-info-data" rows="4" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">666 Cemetery Lane, New York, NY 10001</textarea>
+                    <textarea name="info-data" id="edit-info-data" rows="4" required
+                              class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500"><?= htmlspecialchars($company['key_value']); ?></textarea>
                 </div>
                 <div class="flex justify-end space-x-4">
                     <a href="company.php" class="inline-block purple-light hover:bg-purple-800 text-white font-bold py-3 px-6 rounded transition duration-300">
@@ -125,20 +167,5 @@ $session->confirm_logged_in()
         </div>
     </div>
 </footer>
-
-<script>
-    feather.replace();
-    // Get ID from URL and load corresponding data (in a real app)
-    document.addEventListener('DOMContentLoaded', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const infoId = urlParams.get('id');
-
-        // In a real app, we would fetch the data for this ID from the server
-        if (infoId) {
-            console.log(`Loading data for company info ID: ${infoId}`);
-            // Example: fetch(`/api/company-info/${infoId}`).then(...)
-        }
-    });
-</script>
 </body>
 </html>

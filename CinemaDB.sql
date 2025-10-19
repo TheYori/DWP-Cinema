@@ -32,7 +32,7 @@ CREATE TABLE Admins(
 CREATE TABLE Company(
     key_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     data_key VARCHAR(50) NOT NULL,
-    key_value VARCHAR(255) NOT NULL
+    key_value TEXT NOT NULL
 );
 
 CREATE TABLE News(
@@ -65,7 +65,8 @@ CREATE TABLE Halls(
     hall_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     hall_name VARCHAR(50) NOT NULL
 );
-
+-- As the halls will not change in this project they have been added in here
+-- CRUD via admin back-end panel does not take priority
 INSERT INTO Halls (hall_name) VALUES ('Grimm Hall')
 INSERT INTO Halls (hall_name) VALUES ('Wendigo Den')
 
