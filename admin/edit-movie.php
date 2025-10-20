@@ -3,7 +3,42 @@ spl_autoload_register(function ($class)
 {include"../classes/".$class.".php";});
 //check of the user is logged in:
 $session = new AdminSessionHandler();
-$session->confirm_logged_in()
+$session->confirm_logged_in();
+
+$movieCRUD = new MovieCRUD();
+$message = "";
+
+// Check for movie ID
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    header("Location: movies.php");
+    exit;
+}
+
+$id = (int)$_GET['id'];
+$movie = $movieCRUD->getMovieById($id);
+
+if (!$movie) {
+    $message = "<p class='text-red-400 font-semibold mt-4'>Movie not found.</p>";
+}
+
+// Handle update form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = trim($_POST['title']);
+    $movie_length = trim($_POST['movie_length']);
+    $debut_date = $_POST['debut_date'];
+    $rating = trim($_POST['rating']);
+    $director = trim($_POST['director']);
+    $genre = $_POST['genre'];
+    $movie_desc = $_POST['movie_desc'];
+    $poster = $_FILES['poster'];
+
+    if ($movieCRUD->update($id, $title, $movie_length, $debut_date, $rating, $director, $genre, $movie_desc, $poster)) {
+        header("Location: movies.php?updated=1");
+        exit;
+    } else {
+        $message = "<p class='text-red-400 font-semibold mt-4'>Failed to update movie. Please check inputs or image.</p>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -90,52 +125,68 @@ $session->confirm_logged_in()
     <div class="container mx-auto px-6 max-w-4xl">
         <div class="purple-dark rounded-lg shadow-xl p-8">
             <h2 class="horror-font text-3xl blood-red mb-6">Edit Movie Information</h2>
-            <form class="space-y-6">
+            <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                <?php if (!empty($message)) echo $message; ?>
+
                 <div>
-                    <label for="edit-movie-poster" class="block mb-2">Poster Image</label>
-                    <input type="file" id="edit-movie-poster" accept="image/*" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    <div class="mt-2">
-                        <img src="http://static.photos/horror/200x200/1" alt="Current Poster" class="w-32 h-48 object-cover rounded">
-                    </div>
+                    <label for="poster" class="block mb-2">Poster Image</label>
+                    <?php if (!empty($movie['poster'])): ?>
+                        <img src="../images/movies/<?php echo htmlspecialchars($movie['poster']); ?>"
+                             alt="Movie Poster" class="w-32 h-48 object-cover rounded mb-2">
+                    <?php else: ?>
+                        <p class="text-gray-400 italic mb-2">No poster uploaded</p>
+                    <?php endif; ?>
+                    <input type="file" name="poster" id="poster" accept="image/*"
+                           class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
+
                 <div>
-                    <label for="edit-movie-title" class="block mb-2">Title</label>
-                    <input type="text" id="edit-movie-title" value="The Exorcist" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <label for="title" class="block mb-2">Title</label>
+                    <input type="text" name="title" id="title"
+                           value="<?php echo htmlspecialchars($movie['title']); ?>" required
+                           class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
+
                 <div>
-                    <label for="edit-movie-description" class="block mb-2">Description</label>
-                    <textarea id="edit-movie-description" rows="4" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">When a 12-year-old girl is possessed by a mysterious entity, her mother seeks the help of two priests to save her.</textarea>
+                    <label for="movie_desc" class="block mb-2">Description</label>
+                    <textarea name="movie_desc" id="movie_desc" rows="4" required
+                              class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500"><?php echo htmlspecialchars($movie['movie_desc']); ?></textarea>
                 </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="edit-movie-length" class="block mb-2">Length (minutes)</label>
-                        <input type="number" id="edit-movie-length" value="122" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="movie_length" class="block mb-2">Length (minutes)</label>
+                        <input type="number" name="movie_length" id="movie_length"
+                               value="<?php echo htmlspecialchars($movie['movie_length']); ?>" required
+                               class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
-                        <label for="edit-movie-release-date" class="block mb-2">Release Date</label>
-                        <input type="date" id="edit-movie-release-date" value="1973-12-26" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="debut_date" class="block mb-2">Debut Date</label>
+                        <input type="date" name="debut_date" id="debut_date"
+                               value="<?php echo htmlspecialchars($movie['debut_date']); ?>" required
+                               class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
-                        <label for="edit-movie-rating" class="block mb-2">Rating</label>
-                        <input type="text" id="edit-movie-rating" value="R" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="rating" class="block mb-2">Rating</label>
+                        <input type="text" name="rating" id="rating"
+                               value="<?php echo htmlspecialchars($movie['rating']); ?>" required
+                               class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
-                        <label for="edit-movie-director" class="block mb-2">Director</label>
-                        <input type="text" id="edit-movie-director" value="William Friedkin" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="director" class="block mb-2">Director</label>
+                        <input type="text" name="director" id="director"
+                               value="<?php echo htmlspecialchars($movie['director']); ?>" required
+                               class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                 </div>
+
                 <div>
-                    <label for="edit-movie-genre" class="block mb-2">Genre</label>
-                    <select id="edit-movie-genre" multiple class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        <option selected>Horror</option>
-                        <option>Thriller</option>
-                        <option selected>Psychological</option>
-                        <option selected>Supernatural</option>
-                        <option>Slasher</option>
-                        <option>Sci-Fi</option>
-                        <option>Classic</option>
-                    </select>
+                    <label for="genre" class="block mb-2">Genre</label>
+                    <input type="text" name="genre" id="genre"
+                           value="<?php echo htmlspecialchars($movie['genre']); ?>" required
+                           class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
+
                 <div class="flex justify-end space-x-4">
                     <a href="movies.php" class="inline-block purple-light hover:bg-purple-800 text-white font-bold py-3 px-6 rounded transition duration-300">
                         Cancel

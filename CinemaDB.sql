@@ -67,8 +67,8 @@ CREATE TABLE Halls(
 );
 -- As the halls will not change in this project they have been added in here
 -- CRUD via admin back-end panel does not take priority
-INSERT INTO Halls (hall_name) VALUES ('Grimm Hall')
-INSERT INTO Halls (hall_name) VALUES ('Wendigo Den')
+INSERT INTO Halls (hall_name) VALUES ('Grimm Hall');
+INSERT INTO Halls (hall_name) VALUES ('Wendigo Den');
 
 CREATE TABLE Seats(
     seat_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -87,7 +87,7 @@ CREATE TABLE Movies(
     genre VARCHAR(50) NOT NULL,
     movie_desc VARCHAR(500) NOT NULL,
     poster VARCHAR(255),
-    hall_id INT NOT NULL, 
+    hall_id INT,
     FOREIGN KEY (hall_id) REFERENCES Halls (hall_id)
 );
 

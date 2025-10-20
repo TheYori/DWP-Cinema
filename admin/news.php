@@ -147,8 +147,7 @@ if (isset($_GET['deleted'])) {
                            class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div class="flex justify-end">
-                    <button type="submit"
-                            class="moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
+                    <button type="submit" class="moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
                         Release News <i data-feather="plus" class="inline ml-2"></i>
                     </button>
                 </div>
@@ -177,7 +176,7 @@ if (isset($_GET['deleted'])) {
                                          alt="Banner" class="w-48 h-24 object-cover rounded-lg shadow-lg">
                                 </td>
                                 <td class="py-4"><?= htmlspecialchars($news['title']); ?></td>
-                                <td class="py-4"><?= htmlspecialchars($news['release_date']); ?></td>
+                                <td><?php echo !empty($news['release_date']) ? htmlspecialchars(date('j M Y', strtotime($news['release_date']))) : '-'; ?></td>
                                 <td class="py-4">
                                     <div class="flex items-center space-x-4">
                                         <a href="edit-news.php?id=<?= $news['news_id']; ?>"

@@ -49,7 +49,10 @@ class NewsCRUD
         if ($imageFile && $imageFile['error'] === UPLOAD_ERR_OK)
         {
             $banner_img = $this->handleImageUpload($imageFile);
-            if ($banner_img === false) return false;
+            if ($banner_img === false)
+            {
+                return false;
+            }
 
             $query = $this->conn->prepare("UPDATE News SET title = :title, content = :content, release_date = :release_date, banner_img = :banner_img WHERE news_id = :id");
             $query->bindParam(':banner_img', $banner_img);
@@ -87,7 +90,7 @@ class NewsCRUD
             mkdir($this->uploadPath, 0777, true);
         }
 
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
         $fileType = mime_content_type($imageFile['tmp_name']);
 
         if (!in_array($fileType, $allowedTypes))

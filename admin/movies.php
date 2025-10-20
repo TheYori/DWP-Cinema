@@ -3,7 +3,52 @@ spl_autoload_register(function ($class)
 {include"../classes/".$class.".php";});
 //check of the user is logged in:
 $session = new AdminSessionHandler();
-$session->confirm_logged_in()
+$session->confirm_logged_in();
+
+$movieCRUD = new MovieCRUD();
+$message = "";
+
+// Handle deletion
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    if ($movieCRUD->delete($id)) {
+        header("location: movies.php?deleted=1");
+        exit;
+    } else {
+        $message = "<p class='text-red-400 font-semibold mt-4'>Failed to delete the movie.</p>";
+    }
+}
+
+// Handle the create form
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $title = trim($_POST['title']);
+    $movie_length = trim($_POST['movie_length']);
+    $debut_date = $_POST['debut_date'];
+    $rating = trim($_POST['rating']);
+    $director = trim($_POST['director']);
+    $genre = $_POST['genre'];
+    $movie_desc = $_POST['movie_desc'];
+    $poster = $_FILES['poster'];
+
+    if ($movieCRUD->create($title, $movie_length, $debut_date, $rating, $director, $genre, $movie_desc, $poster)) {
+        header("location: movies.php?success=1");
+        exit;
+    } else {
+        $message = "<p class='text-red-400 font-semibold mt-4'>Failed to upload the movie. Please check the image and try again.</p>";
+    }
+}
+
+// This stupid line caused me so much trouble...
+//Gives me all the movies to put in a list
+$movieList = $movieCRUD->getAllMovies();
+
+// Success messages
+if (isset($_GET['success'])) {
+    $message = "<p class='text-green-400 font-semibold mt-4'>The movie was added successfully!</p>";
+}
+if (isset($_GET['deleted'])) {
+    $message = "<p class='text-green-400 font-semibold mt-4'>The movie was deleted successfully!</p>";
+}
 ?>
 
 <!DOCTYPE html>
@@ -23,27 +68,13 @@ $session->confirm_logged_in()
             background-color: #0f0a1a;
             color: #e0d6eb;
         }
-        .horror-font {
-            font-family: 'Creepster', cursive;
-        }
-        .purple-dark {
-            background-color: #1a1029;
-        }
-        .purple-light {
-            background-color: #2a1a4a;
-        }
-        .moss-green {
-            background-color: #1a2910;
-        }
-        .blood-red {
-            color: #ff3a3a;
-        }
-        .glow {
-            text-shadow: 0 0 5px #9b59b6, 0 0 10px #9b59b6;
-        }
-        .admin-nav {
-            background-color: #0a0515;
-        }
+        .horror-font {font-family: 'Creepster', cursive;}
+        .purple-dark {background-color: #1a1029;}
+        .purple-light {background-color: #2a1a4a;}
+        .moss-green {background-color: #1a2910;}
+        .blood-red {color: #ff3a3a;}
+        .glow {text-shadow: 0 0 5px #9b59b6, 0 0 10px #9b59b6;}
+        .admin-nav {background-color: #0a0515;}
     </style>
 </head>
 <body class="min-h-screen">
@@ -100,48 +131,41 @@ $session->confirm_logged_in()
         <!-- Add Movie Form -->
         <div id="add-movie-section" class="purple-dark rounded-lg shadow-xl p-8">
             <h2 class="horror-font text-3xl blood-red mb-6">Add New Movie</h2>
-            <form class="space-y-6">
+            <?php if (!empty($message)) echo $message; ?>
+            <form method="POST" enctype="multipart/form-data" class="space-y-6">
                 <div>
-                    <label for="movie-poster" class="block mb-2">Poster Image</label>
-                    <input type="file" id="movie-poster" accept="image/*" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <label for="poster" class="block mb-2">Poster Image</label>
+                    <input type="file" name="poster" id="poster" accept="image/*" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
-                    <label for="movie-title" class="block mb-2">Title</label>
-                    <input type="text" id="movie-title" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <label for="title" class="block mb-2">Title</label>
+                    <input type="text" name="title" id="title" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
-                    <label for="movie-description" class="block mb-2">Description</label>
-                    <textarea id="movie-description" rows="4" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+                    <label for="movie_desc" class="block mb-2">Description</label>
+                    <textarea name="movie_desc" id="movie_desc" rows="4" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="movie-length" class="block mb-2">Length (minutes)</label>
-                        <input type="number" id="movie-length" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="movie_length" class="block mb-2">Length (minutes)</label>
+                        <input type="number" name="movie_length" id="movie_length" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
-                        <label for="movie-release-date" class="block mb-2">Release Date</label>
-                        <input type="date" id="movie-release-date" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="debut_date" class="block mb-2">Debut Date</label>
+                        <input type="date" name="debut_date" id="debut_date" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
-                        <label for="movie-rating" class="block mb-2">Rating</label>
-                        <input type="text" id="movie-rating" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="rating" class="block mb-2">Rating</label>
+                        <input type="text" name="rating" id="rating" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
-                        <label for="movie-director" class="block mb-2">Director</label>
-                        <input type="text" id="movie-director" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="director" class="block mb-2">Director</label>
+                        <input type="text" name="director" id="director" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                 </div>
                 <div>
-                    <label for="movie-genre" class="block mb-2">Genre</label>
-                    <select id="movie-genre" multiple class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
-                        <option>Horror</option>
-                        <option>Thriller</option>
-                        <option>Psychological</option>
-                        <option>Supernatural</option>
-                        <option>Slasher</option>
-                        <option>Sci-Fi</option>
-                        <option>Classic</option>
-                    </select>
+                    <label for="genre" class="block mb-2">Genre</label>
+                    <input type="text" name="genre" id="genre" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div class="flex justify-end">
                     <button type="submit" class="moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
@@ -160,54 +184,49 @@ $session->confirm_logged_in()
                     <tr class="text-left border-b border-gray-700">
                         <th class="pb-4">Poster</th>
                         <th class="pb-4">Title</th>
-                        <th class="pb-4">Year</th>
+                        <th class="pb-4">Debut Date</th>
                         <th class="pb-4">Director</th>
-                        <th class="pb-4">Actions</th>
+                        <th class="pb-4 text-center">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="border-b border-gray-700">
-                        <td class="py-4"><img src="http://static.photos/horror/200x200/1" alt="Movie Poster" class="w-16 h-24 object-cover rounded"></td>
-                        <td class="py-4">The Exorcist</td>
-                        <td class="py-4">1973</td>
-                        <td class="py-4">William Friedkin</td>
-                        <td class="py-4">
-                            <a href="edit-movie.php?id=1" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
-                                <i data-feather="edit" class="mr-1"></i> Edit
-                            </a>
-                            <button class="text-red-400 hover:text-red-300">
-                                <i data-feather="trash-2" class="mr-1"></i> Delete
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-gray-700">
-                        <td class="py-4"><img src="http://static.photos/horror/200x200/2" alt="Movie Poster" class="w-16 h-24 object-cover rounded"></td>
-                        <td class="py-4">Halloween</td>
-                        <td class="py-4">1978</td>
-                        <td class="py-4">John Carpenter</td>
-                        <td class="py-4">
-                            <a href="edit-movie.php?id=2" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
-                                <i data-feather="edit" class="mr-1"></i> Edit
-                            </a>
-                            <button class="text-red-400 hover:text-red-300">
-                                <i data-feather="trash-2" class="mr-1"></i> Delete
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="py-4"><img src="http://static.photos/horror/200x200/3" alt="Movie Poster" class="w-16 h-24 object-cover rounded"></td>
-                        <td class="py-4">The Texas Chain Saw Massacre</td>
-                        <td class="py-4">1974</td>
-                        <td class="py-4">Tobe Hooper</td>
-                        <td class="py-4">
-                            <a href="edit-movie.php?id=3" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
-                                <i data-feather="edit" class="mr-1"></i> Edit
-                            </a>
-                            <button class="text-red-400 hover:text-red-300">
-                                <i data-feather="trash-2" class="mr-1"></i> Delete
-                            </button>
-                        </td>
-                    </tr>
+                    <?php if (!empty($movieList)): ?>
+                        <?php foreach ($movieList as $movie): ?>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-4">
+                                    <?php if (!empty($movie['poster'])): ?>
+                                        <img src="../images/movies/<?php echo htmlspecialchars($movie['poster']); ?>"
+                                             alt="Movie Poster"
+                                             class="w-16 h-24 object-cover rounded">
+                                    <?php else: ?>
+                                        <span class="text-gray-400 italic">No Poster</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="py-4"><?php echo htmlspecialchars($movie['title']); ?></td>
+                                <td class="py-4"><?php echo !empty($movie['debut_date']) ? htmlspecialchars(date('j M Y', strtotime($movie['debut_date']))) : '-'; ?></td>
+                                <td class="py-4"><?php echo htmlspecialchars($movie['director']); ?></td>
+                                <td class="py-4 text-center">
+                                    <div class="inline-flex items-center space-x-2 justify-center">
+                                        <a href="edit-movie.php?id=<?php echo $movie['movie_id']; ?>"
+                                           class="inline-block text-yellow-400 hover:text-yellow-300 flex items-center">
+                                            <i data-feather="edit" class="mr-1"></i> Edit
+                                        </a>
+                                        <a href="?delete=<?php echo $movie['movie_id']; ?>"
+                                           onclick="return confirm('Are you sure you want to delete this movie?');"
+                                           class="inline-block text-red-400 hover:text-red-300 flex items-center">
+                                            <i data-feather="trash-2" class="mr-1"></i> Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-gray-400 italic">
+                                No movies found.
+                            </td>
+                        </tr>
+                    <?php endif; ?>
                     </tbody>
                 </table>
             </div>
