@@ -42,10 +42,7 @@ class CompanyCRUD
     public function update($id, $data_key, $key_value) {
         // Im not 100% that this is correct, but hey, it works
         $sql = "UPDATE Company SET data_key = '$data_key', key_value = '$key_value' WHERE key_id = $id";
-
         $stmt = $this->db->prepare($sql);
-
-        // trying to execute the query
         if($stmt->execute())
         {
             return true;
@@ -65,4 +62,3 @@ class CompanyCRUD
         return $query->execute();
     }
 }
-?>
