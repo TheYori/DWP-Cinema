@@ -11,7 +11,7 @@ $session->confirm_logged_in()
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midnight Scream Spectacle - Admin Management</title>
+    <title>Midnight Scream Spectacle - Admin News</title>
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -63,6 +63,11 @@ $session->confirm_logged_in()
                     Log Out <i data-feather="log-out" class="inline ml-1"></i>
                 </a>
             </div>
+            <div class="md:hidden">
+                <button class="text-white focus:outline-none">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
         </div>
     </div>
 </nav>
@@ -74,72 +79,74 @@ $session->confirm_logged_in()
             <a href="company.php" class="text-white hover:text-purple-300">Company Info</a>
             <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
             <a href="showtimes.php" class="text-white hover:text-purple-300">Showtimes</a>
-            <a href="news.php" class="text-white hover:text-purple-300">News</a>
-            <a href="admin.php" class="text-purple-300 font-bold">Admins</a>
+            <a href="news.php" class="text-purple-300 font-bold">News</a>
+            <a href="admin.php" class="text-white hover:text-purple-300">Admins</a>
         </div>
     </div>
 </div>
 
-<!-- Admin Management Tabs -->
+<!-- Movies Tabs -->
 <section class="py-8">
     <div class="container mx-auto px-6 max-w-6xl">
         <div class="flex border-b border-gray-700 mb-8">
-            <button id="add-admin-tab" class="px-6 py-3 font-medium text-white border-b-2 border-purple-500">
-                Add Admin
+            <button id="add-movie-tab" class="px-6 py-3 font-medium text-white border-b-2 border-purple-500">
+                Add Movie
             </button>
-            <button id="view-admins-tab" class="px-6 py-3 font-medium text-gray-400 hover:text-white">
-                View/Edit Admins
+            <button id="view-movies-tab" class="px-6 py-3 font-medium text-gray-400 hover:text-white">
+                View/Edit Movies
             </button>
         </div>
 
-        <!-- Add Admin Form -->
-        <div id="add-admin-section" class="purple-dark rounded-lg shadow-xl p-8">
-            <h2 class="horror-font text-3xl blood-red mb-6">Add New Admin</h2>
+        <!-- Add Movie Form -->
+        <div id="add-movie-section" class="purple-dark rounded-lg shadow-xl p-8">
+            <h2 class="horror-font text-3xl blood-red mb-6">Add New Movie</h2>
             <form class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="admin-first-name" class="block mb-2">First Name</label>
-                        <input type="text" id="admin-first-name" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    </div>
-                    <div>
-                        <label for="admin-last-name" class="block mb-2">Last Name</label>
-                        <input type="text" id="admin-last-name" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    </div>
+                <div>
+                    <label for="movie-poster" class="block mb-2">Banner Image</label>
+                    <input type="file" id="movie-poster" accept="image/*" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
-                    <label for="admin-username" class="block mb-2">Username</label>
-                    <input type="text" id="admin-username" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <label for="movie-title" class="block mb-2">Title</label>
+                    <input type="text" id="movie-title" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
-                    <label for="admin-password" class="block mb-2">Password</label>
-                    <input type="password" id="admin-password" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <label for="movie-description" class="block mb-2">Content</label>
+                    <textarea id="movie-description" rows="4" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
                 </div>
-                <button type="submit" class="w-full moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
-                    Create Admin <i data-feather="user-plus" class="inline ml-2"></i>
-                </button>
+                <div>
+                    <div>
+                        <label for="movie-release-date" class="block mb-2">Release Date</label>
+                        <input type="date" id="movie-release-date" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
+                        Release News <i data-feather="plus" class="inline ml-2"></i>
+                    </button>
+                </div>
             </form>
         </div>
 
-        <!-- View Admins Table -->
-        <div id="view-admins-section" class="purple-dark rounded-lg shadow-xl p-8 hidden">
-            <h2 class="horror-font text-3xl blood-red mb-6">Admin Accounts</h2>
+        <!-- View Movies Table -->
+        <div id="view-movies-section" class="purple-dark rounded-lg shadow-xl p-8 hidden">
+            <h2 class="horror-font text-3xl blood-red mb-6">News Collection</h2>
             <div class="overflow-x-auto">
                 <table class="w-full">
                     <thead>
                     <tr class="text-left border-b border-gray-700">
-                        <th class="pb-4">First Name</th>
-                        <th class="pb-4">Last Name</th>
-                        <th class="pb-4">Username</th>
+                        <th class="pb-4">Banner</th>
+                        <th class="pb-4">Title</th>
+                        <th class="pb-4">Release Date</th>
                         <th class="pb-4">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr class="border-b border-gray-700">
-                        <td class="py-4">Vincent</td>
-                        <td class="py-4">Graves</td>
-                        <td class="py-4">admin1</td>
+                        <td class="py-4"><img src="http://static.photos/horror/200x200/1" alt="Movie Poster" class="w-16 h-24 object-cover rounded"></td>
+                        <td class="py-4">Welcome to Midnight Scream!!</td>
+                        <td class="py-4">18/10/2025</td>
                         <td class="py-4">
-                            <a href="edit-admin.php?id=1" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
+                            <a href="edit-news.php?id=1" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
                                 <i data-feather="edit" class="mr-1"></i> Edit
                             </a>
                             <button class="text-red-400 hover:text-red-300">
@@ -148,11 +155,11 @@ $session->confirm_logged_in()
                         </td>
                     </tr>
                     <tr class="border-b border-gray-700">
-                        <td class="py-4">Eliza</td>
-                        <td class="py-4">Moon</td>
-                        <td class="py-4">admin2</td>
+                        <td class="py-4"><img src="http://static.photos/horror/200x200/2" alt="Movie Poster" class="w-16 h-24 object-cover rounded"></td>
+                        <td class="py-4">Halloween Sale!</td>
+                        <td class="py-4">20/10/2025</td>
                         <td class="py-4">
-                            <a href="edit-admin.php?id=2" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
+                            <a href="edit-news.php?id=2" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
                                 <i data-feather="edit" class="mr-1"></i> Edit
                             </a>
                             <button class="text-red-400 hover:text-red-300">
@@ -161,11 +168,11 @@ $session->confirm_logged_in()
                         </td>
                     </tr>
                     <tr>
-                        <td class="py-4">Max</td>
-                        <td class="py-4">Raven</td>
-                        <td class="py-4">admin3</td>
+                        <td class="py-4"><img src="http://static.photos/horror/200x200/3" alt="Movie Poster" class="w-16 h-24 object-cover rounded"></td>
+                        <td class="py-4">The magic of horror</td>
+                        <td class="py-4">01/11/2025</td>
                         <td class="py-4">
-                            <a href="edit-admin.php?id=3" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
+                            <a href="edit-news.php?id=3" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
                                 <i data-feather="edit" class="mr-1"></i> Edit
                             </a>
                             <button class="text-red-400 hover:text-red-300">
@@ -200,27 +207,27 @@ $session->confirm_logged_in()
 
     // Tab switching functionality
     document.addEventListener('DOMContentLoaded', function() {
-        const addAdminTab = document.getElementById('add-admin-tab');
-        const viewAdminsTab = document.getElementById('view-admins-tab');
-        const addAdminSection = document.getElementById('add-admin-section');
-        const viewAdminsSection = document.getElementById('view-admins-section');
+        const addMovieTab = document.getElementById('add-movie-tab');
+        const viewMoviesTab = document.getElementById('view-movies-tab');
+        const addMovieSection = document.getElementById('add-movie-section');
+        const viewMoviesSection = document.getElementById('view-movies-section');
 
-        addAdminTab.addEventListener('click', function() {
-            addAdminTab.classList.add('text-white', 'border-purple-500');
-            addAdminTab.classList.remove('text-gray-400');
-            viewAdminsTab.classList.add('text-gray-400');
-            viewAdminsTab.classList.remove('text-white', 'border-purple-500');
-            addAdminSection.classList.remove('hidden');
-            viewAdminsSection.classList.add('hidden');
+        addMovieTab.addEventListener('click', function() {
+            addMovieTab.classList.add('text-white', 'border-purple-500');
+            addMovieTab.classList.remove('text-gray-400');
+            viewMoviesTab.classList.add('text-gray-400');
+            viewMoviesTab.classList.remove('text-white', 'border-purple-500');
+            addMovieSection.classList.remove('hidden');
+            viewMoviesSection.classList.add('hidden');
         });
 
-        viewAdminsTab.addEventListener('click', function() {
-            viewAdminsTab.classList.add('text-white', 'border-purple-500');
-            viewAdminsTab.classList.remove('text-gray-400');
-            addAdminTab.classList.add('text-gray-400');
-            addAdminTab.classList.remove('text-white', 'border-purple-500');
-            viewAdminsSection.classList.remove('hidden');
-            addAdminSection.classList.add('hidden');
+        viewMoviesTab.addEventListener('click', function() {
+            viewMoviesTab.classList.add('text-white', 'border-purple-500');
+            viewMoviesTab.classList.remove('text-gray-400');
+            addMovieTab.classList.add('text-gray-400');
+            addMovieTab.classList.remove('text-white', 'border-purple-500');
+            viewMoviesSection.classList.remove('hidden');
+            addMovieSection.classList.add('hidden');
         });
     });
 </script>

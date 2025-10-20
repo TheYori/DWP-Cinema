@@ -11,7 +11,7 @@ $session->confirm_logged_in()
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midnight Scream Spectacle - Edit Admin</title>
+    <title>Midnight Scream Spectacle - Edit Movie</title>
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
@@ -63,6 +63,11 @@ $session->confirm_logged_in()
                     Log Out <i data-feather="log-out" class="inline ml-1"></i>
                 </a>
             </div>
+            <div class="md:hidden">
+                <button class="text-white focus:outline-none">
+                    <i data-feather="menu"></i>
+                </button>
+            </div>
         </div>
     </div>
 </nav>
@@ -72,40 +77,43 @@ $session->confirm_logged_in()
     <div class="container mx-auto px-6">
         <div class="flex flex-wrap gap-4">
             <a href="company.php" class="text-white hover:text-purple-300">Company Info</a>
-            <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
+            <a href="movies.php" class="text-purple-300 font-bold">Movies</a>
             <a href="showtimes.php" class="text-white hover:text-purple-300">Showtimes</a>
             <a href="news.php" class="text-white hover:text-purple-300">News</a>
-            <a href="admin.php" class="text-purple-300 font-bold">Admins</a>
+            <a href="admin.php" class="text-white hover:text-purple-300">Admins</a>
         </div>
     </div>
 </div>
 
-<!-- Edit Admin Form -->
+<!-- Edit Movie Form -->
 <section class="py-16">
     <div class="container mx-auto px-6 max-w-4xl">
         <div class="purple-dark rounded-lg shadow-xl p-8">
-            <h2 class="horror-font text-3xl blood-red mb-6">Edit Admin Information</h2>
+            <h2 class="horror-font text-3xl blood-red mb-6">Edit Movie Information</h2>
             <form class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label for="edit-admin-first-name" class="block mb-2">First Name</label>
-                        <input type="text" id="edit-admin-first-name" value="Vincent" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    </div>
-                    <div>
-                        <label for="edit-admin-last-name" class="block mb-2">Last Name</label>
-                        <input type="text" id="edit-admin-last-name" value="Graves" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <div>
+                    <label for="edit-movie-poster" class="block mb-2">Poster Image</label>
+                    <input type="file" id="edit-movie-poster" accept="image/*" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <div class="mt-2">
+                        <img src="http://static.photos/horror/200x200/1" alt="Current Poster" class="w-32 h-48 object-cover rounded">
                     </div>
                 </div>
                 <div>
-                    <label for="edit-admin-username" class="block mb-2">Username</label>
-                    <input type="text" id="edit-admin-username" value="admin1" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <label for="edit-movie-title" class="block mb-2">Title</label>
+                    <input type="text" id="edit-movie-title" value="The Exorcist" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
-                    <label for="edit-admin-password" class="block mb-2">Password</label>
-                    <input type="password" id="edit-admin-password" placeholder="Enter new password" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <label for="edit-movie-description" class="block mb-2">Description</label>
+                    <textarea id="edit-movie-description" rows="4" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">When a 12-year-old girl is possessed by a mysterious entity, her mother seeks the help of two priests to save her.</textarea>
+                </div>
+                <div>
+                    <div>
+                        <label for="edit-movie-release-date" class="block mb-2">Release Date</label>
+                        <input type="date" id="edit-movie-release-date" value="1973-12-26" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
                 </div>
                 <div class="flex justify-end space-x-4">
-                    <a href="admin.php" class="inline-block purple-light hover:bg-purple-800 text-white font-bold py-3 px-6 rounded transition duration-300">
+                    <a href="movies.php" class="inline-block purple-light hover:bg-purple-800 text-white font-bold py-3 px-6 rounded transition duration-300">
                         Cancel
                     </a>
                     <button type="submit" class="moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
@@ -117,18 +125,33 @@ $session->confirm_logged_in()
     </div>
 </section>
 
+<!-- Footer -->
+<footer class="purple-dark py-8">
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <span class="horror-font text-2xl blood-red">Midnight Scream</span>
+                <p class="text-sm mt-1">© 2023 All Rights Reserved</p>
+            </div>
+            <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-sm">
+                <a href="../index.php" class="hover:text-purple-300">Back to Main Site</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
 <script>
     feather.replace();
 
     // Get ID from URL and load corresponding data (in a real app)
     document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
-        const adminId = urlParams.get('id');
+        const movieId = urlParams.get('id');
 
         // In a real app, we would fetch the data for this ID from the server
-        if (adminId) {
-            console.log(`Loading data for admin ID: ${adminId}`);
-            // Example: fetch(`/api/admins/${adminId}`).then(...)
+        if (movieId) {
+            console.log(`Loading data for movie ID: ${movieId}`);
+            // Example: fetch(`/api/movies/${movieId}`).then(...)
         }
     });
 </script>

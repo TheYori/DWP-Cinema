@@ -79,6 +79,7 @@ $session->confirm_logged_in()
             <a href="company.php" class="text-white hover:text-purple-300">Company Info</a>
             <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
             <a href="showtimes.php" class="text-purple-300 font-bold">Showtimes</a>
+            <a href="news.php" class="text-white hover:text-purple-300">News</a>
             <a href="admin.php" class="text-white hover:text-purple-300">Admins</a>
         </div>
     </div>
