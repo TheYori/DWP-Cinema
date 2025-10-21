@@ -1,3 +1,11 @@
+<?php
+spl_autoload_register(function ($class)
+{include"classes/".$class.".php";});
+//check of the user is logged in:
+$session = new UserSessionHandler();
+$session->confirm_logged_in()
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
