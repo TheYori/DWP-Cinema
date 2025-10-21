@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title']);
     $movie_length = trim($_POST['movie_length']);
     $debut_date = $_POST['debut_date'];
-    $rating = trim($_POST['rating']);
+    $rating = $_POST['rating'];
     $director = trim($_POST['director']);
     $genre = $_POST['genre'];
     $movie_desc = $_POST['movie_desc'];
