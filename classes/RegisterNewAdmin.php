@@ -1,5 +1,5 @@
 <?php
-class AdminNewUser
+class RegisterNewAdmin
 {
     public $message;
     public function __construct($fname, $lname, $username, $password)

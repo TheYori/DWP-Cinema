@@ -4,7 +4,7 @@ spl_autoload_register(function ($class)
 $session = new AdminSessionHandler();
 // START FORM PROCESSING
 if (isset($_POST['submit'])) { // Form has been submitted.
-    $newUser = new AdminNewUser($_POST['fname'], $_POST['lname'], $_POST['user'],$_POST['pass']);
+    $newUser = new RegisterNewAdmin($_POST['fname'], $_POST['lname'], $_POST['user'],$_POST['pass']);
     $msg = $newUser->message;
 }
 $redirect = new Redirector("login.php");

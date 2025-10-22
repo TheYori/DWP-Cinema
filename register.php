@@ -69,34 +69,34 @@
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
                         <label for="first-name" class="block mb-2">First Name</label>
-                        <input type="text" id="first-name" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="text" name="first-name" id="first-name" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
                         <label for="last-name" class="block mb-2">Last Name</label>
-                        <input type="text" id="last-name" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="text" name="last-name" id="last-name" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                 </div>
 
                 <div>
                     <label for="email" class="block mb-2">Email</label>
-                    <input type="email" id="email" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <input type="email" name="email" id="email" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
                         <label for="phone" class="block mb-2">Phone Number</label>
-                        <input type="tel" id="phone" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="tel" name="phone" id="phone" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
                         <label for="dob" class="block mb-2">Date of Birth</label>
-                        <input type="date" id="dob" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="date" name="dob" id="dob" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
                         <label for="password" class="block mb-2">Password</label>
-                        <input type="password" id="password" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="password" name="password" id="password" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
                         <label for="confirm-password" class="block mb-2">Confirm Password</label>
@@ -106,17 +106,17 @@
 
                 <div>
                     <label for="street" class="block mb-2">Street Address</label>
-                    <input type="text" id="street" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <input type="text" name="street" id="street" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
                         <label for="postal-code" class="block mb-2">Postal Code</label>
-                        <input type="text" id="postal-code" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="text" name="postal-code" id="postal-code" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
                         <label for="city" class="block mb-2">City</label>
-                        <input type="text" id="city" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="text" name="city" id="city" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                 </div>
 
