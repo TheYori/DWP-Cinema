@@ -86,9 +86,9 @@ $session->confirm_logged_in()
                         <button class="purple-light hover:bg-purple-800 text-white py-2 px-4 rounded transition duration-300">
                             <i data-feather="key" class="mr-2"></i> Change Password
                         </button>
-                        <button class="moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
+                        <a href="login.php?logout=1" class="moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
                             <i data-feather="log-out" class="mr-2"></i> Log Out
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>

@@ -1,22 +1,23 @@
 <?php
-class LoginAdmin
+class LoginUser
 {
     public $message;
-    public function __construct($username, $password)
+    public function __construct($email, $password)
     {
         $db = new DatabaseCon();
-        $username = trim($username);
+        $username = trim($email);
         $pass = trim($password);
-        $query = $db->databaseCon->prepare("SELECT admin_id, username, admin_password FROM admins WHERE username = '{$username}' LIMIT 1");
+        $query = $db->databaseCon->prepare("SELECT user_id, email, user_password FROM users WHERE email = '{$email}' LIMIT 1");
         if($query->execute())
         {
             $found_user = $query->fetchAll();
-            if (count($found_user)==1){
-                if(password_verify($pass, $found_user[0]['admin_password']))
+            if (count($found_user)==1)
+            {
+                if(password_verify($pass, $found_user[0]['user_password']))
                 {
-                    $_SESSION['admin_id'] = $found_user[0]['admin_id'];
-                    $_SESSION['username'] = $found_user[0]['username'];
-                    $redirect = new Redirector("company.php");
+                    $_SESSION['user_id'] = $found_user[0]['user_id'];
+                    $_SESSION['email'] = $found_user[0]['email'];
+                    $redirect = new Redirector("profile.php");
                 }
                 else
                 {
