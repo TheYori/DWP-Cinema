@@ -65,10 +65,6 @@ CREATE TABLE Halls(
     hall_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     hall_name VARCHAR(50) NOT NULL
 );
--- As the halls will not change in this project they have been added in here
--- CRUD via admin back-end panel does not take priority
-INSERT INTO Halls (hall_name) VALUES ('Grimm Hall');
-INSERT INTO Halls (hall_name) VALUES ('Wendigo Den');
 
 CREATE TABLE Seats(
     seat_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -122,7 +118,15 @@ CREATE TABLE Will_have(
 
 
 
+-- HALL DATA --
+-- As the halls will not change in this project they have been added in here
+-- CRUD via admin back-end panel does not take priority
+INSERT INTO Halls (hall_name) VALUES ('Grimm Hall');
+INSERT INTO Halls (hall_name) VALUES ('Wendigo Den');
+
 -- POSTAL CODE DATA --
+-- All this data is permanent and will not change
+-- This data needs to be implemented after database creation
 INSERT INTO PostalCodes (postal_code, city) VALUES (1301, 'København K');
 INSERT INTO PostalCodes (postal_code, city) VALUES (2000, 'Frederiksberg');
 INSERT INTO PostalCodes (postal_code, city) VALUES (2100, 'København Ø');
