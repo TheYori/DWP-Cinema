@@ -23,11 +23,11 @@ if (isset($_GET['delete'])) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $title = trim($_POST['title']);
     $movie_length = trim($_POST['movie_length']);
-    $debut_date = $_POST['debut_date'];
+    $debut_date = trim($_POST['debut_date']);
     $rating = $_POST['rating'];
     $director = trim($_POST['director']);
-    $genre = $_POST['genre'];
-    $movie_desc = $_POST['movie_desc'];
+    $genre = trim($_POST['genre']);
+    $movie_desc = trim($_POST['movie_desc']);
     $poster = $_FILES['poster'];
 
     if ($movieCRUD->create($title, $movie_length, $debut_date, $rating, $director, $genre, $movie_desc, $poster)) {

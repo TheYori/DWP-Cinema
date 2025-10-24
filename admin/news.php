@@ -26,7 +26,7 @@ if (isset($_GET['delete'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title']);
     $content = trim($_POST['content']);
-    $release_date = $_POST['release_date'];
+    $release_date = trim($_POST['release_date']);
     $imageFile = $_FILES['banner_img'];
 
     if ($newsCRUD->create($title, $content, $release_date, $imageFile)) {
