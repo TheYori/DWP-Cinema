@@ -106,6 +106,11 @@ if (isset($_POST['submit']))
                 <button type="submit" name="submit" class="w-full moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
                     Login <i data-feather="log-in" class="inline ml-2"></i>
                 </button>
+                <div class="text-center">
+                    <a href="register.php" class="text-purple-300 hover:text-purple-200">
+                        Haven't signed over your soul yet?  <br> <b>Register here!</b>
+                    </a>
+                </div>
             </form>
         </div>
     </div>

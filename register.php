@@ -1,3 +1,20 @@
+<?php
+spl_autoload_register(function ($class)
+{include "classes/".$class.".php";});
+$session = new UserSessionHandler();
+
+// START FORM PROCESSING
+if (isset($_POST['submit'])) {
+    $newUser = new RegisterNewUser($_POST['fname'], $_POST['lname'], $_POST['phone'], $_POST['birth_date'], $_POST['email'], $_POST['street'], $_POST['postal_code'], $_POST['city'], $_POST['pass']);
+    $msg = $newUser->message;
+
+    if ($msg === "User registered successfully.") {
+        $redirect = new Redirector("login.php");
+        exit;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,15 +82,20 @@
     <div class="container mx-auto px-6 max-w-2xl">
         <div class="purple-dark rounded-lg shadow-xl p-8">
             <h1 class="horror-font text-4xl blood-red mb-8 text-center">Join the Nightmare</h1>
-            <form class="space-y-6">
+            <?php
+            if (!empty($msg)) {
+                echo "<p><strong>" . htmlspecialchars($msg) . "</strong></p>";
+            }
+            ?>
+            <form action="" method="post" class="space-y-6">
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label for="first-name" class="block mb-2">First Name</label>
-                        <input type="text" name="first-name" id="first-name" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="fname" class="block mb-2">First Name</label>
+                        <input type="text" name="fname" id="fname" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
-                        <label for="last-name" class="block mb-2">Last Name</label>
-                        <input type="text" name="last-name" id="last-name" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="lname" class="block mb-2">Last Name</label>
+                        <input type="text" name="lname" id="lname" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                 </div>
 
@@ -85,22 +107,18 @@
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
                         <label for="phone" class="block mb-2">Phone Number</label>
-                        <input type="tel" name="phone" id="phone" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="text" name="phone" id="phone" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
-                        <label for="dob" class="block mb-2">Date of Birth</label>
-                        <input type="date" name="dob" id="dob" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="birth_date" class="block mb-2">Date of Birth</label>
+                        <input type="date" name="birth_date" id="birth_date" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                 </div>
 
-                <div class="grid md:grid-cols-2 gap-6">
+                <div>
                     <div>
-                        <label for="password" class="block mb-2">Password</label>
-                        <input type="password" name="password" id="password" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
-                    </div>
-                    <div>
-                        <label for="confirm-password" class="block mb-2">Confirm Password</label>
-                        <input type="password" id="confirm-password" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="pass" class="block mb-2">Password</label>
+                        <input type="password" name="pass" id="pass" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                 </div>
 
@@ -111,8 +129,8 @@
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div>
-                        <label for="postal-code" class="block mb-2">Postal Code</label>
-                        <input type="text" name="postal-code" id="postal-code" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <label for="postal_code" class="block mb-2">Postal Code</label>
+                        <input type="number" name="postal_code" id="postal_code" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
                     <div>
                         <label for="city" class="block mb-2">City</label>
@@ -120,13 +138,13 @@
                     </div>
                 </div>
 
-                <button type="submit" class="w-full moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
+                <button type="submit" name="submit" class="w-full moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
                     Register <i data-feather="user-plus" class="inline ml-2"></i>
                 </button>
 
                 <div class="text-center">
                     <a href="login.php" class="text-purple-300 hover:text-purple-200">
-                        Already have an account? Login here
+                        Already have an account? <br> <b>Login here!</b>
                     </a>
                 </div>
             </form>
