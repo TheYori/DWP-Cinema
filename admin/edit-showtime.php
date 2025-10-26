@@ -3,7 +3,46 @@ spl_autoload_register(function ($class)
 {include"../classes/".$class.".php";});
 //check of the user is logged in:
 $session = new AdminSessionHandler();
-$session->confirm_logged_in()
+$session->confirm_logged_in();
+
+$showtimeCRUD = new ShowtimeCRUD();
+
+// Get the ID from the URL
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header("Location: showtimes.php");
+    exit;
+}
+
+$id = (int)$_GET['id'];
+
+// Get showtime info
+$showtime = $showtimeCRUD->getShowtimeById($id);
+if (!$showtime) {
+    $_SESSION['message'] = "<p class='text-red-400 font-semibold'>Showtime not found.</p>";
+    header("Location: showtimes.php");
+    exit;
+}
+
+// Get dropdown data
+$movies = $showtimeCRUD->getAllMovies();
+$halls = $showtimeCRUD->getAllHalls();
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $movie_id = $_POST['movie_id'];
+    $hall_id = $_POST['hall_id'];
+    $show_date = $_POST['show_date'];
+    $show_time = $_POST['show_time'];
+
+    if ($showtimeCRUD->update($id, $show_date, $show_time, $hall_id, $movie_id)) {
+        $_SESSION['message'] = "<p class='text-green-400 font-semibold'>Showtime updated successfully!</p>";
+    } else {
+        $_SESSION['message'] = "<p class='text-red-400 font-semibold'>Error updating showtime.</p>";
+    }
+
+    header("Location: showtimes.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -89,31 +128,47 @@ $session->confirm_logged_in()
         <div class="container mx-auto px-6 max-w-4xl">
             <div class="purple-dark rounded-lg shadow-xl p-8">
                 <h2 class="horror-font text-3xl blood-red mb-6">Edit Showtime</h2>
-                <form class="space-y-6">
+                <form method="post" class="space-y-6">
                     <div>
                         <label for="edit-showtime-movie" class="block mb-2">Movie Title</label>
-                        <select id="edit-showtime-movie" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option value="1" selected>The Exorcist</option>
-                            <option value="2">Halloween</option>
-                            <option value="3">The Texas Chain Saw Massacre</option>
+                        <select name="movie_id" id="edit-showtime-movie" required
+                                class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <?php foreach ($movies as $movie): ?>
+                                <option value="<?php echo $movie['movie_id']; ?>"
+                                        <?php echo ($movie['movie_id'] == $showtime['movie_id']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($movie['title']); ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
+
                     <div>
                         <label for="edit-showtime-date" class="block mb-2">Date</label>
-                        <input type="date" id="edit-showtime-date" value="2023-10-31" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="date" name="show_date" id="edit-showtime-date"
+                               value="<?php echo htmlspecialchars($showtime['show_date']); ?>"
+                               required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
+
                     <div>
                         <label for="edit-showtime-time" class="block mb-2">Time</label>
-                        <input type="time" id="edit-showtime-time" value="19:00" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <input type="time" name="show_time" id="edit-showtime-time"
+                               value="<?php echo substr($showtime['show_time'], 0, 5); ?>"
+                               required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                     </div>
+
                     <div>
                         <label for="edit-showtime-hall" class="block mb-2">Hall</label>
-                        <select id="edit-showtime-hall" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
-                            <option value="Hall A" selected>Hall A</option>
-                            <option value="Hall B">Hall B</option>
-                            <option value="Hall C">Hall C</option>
+                        <select name="hall_id" id="edit-showtime-hall" required
+                                class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <?php foreach ($halls as $hall): ?>
+                                <option value="<?php echo $hall['hall_id']; ?>"
+                                        <?php echo ($hall['hall_id'] == $showtime['hall_id']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($hall['hall_name']); ?>
+                                </option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
+
                     <div class="flex justify-end space-x-4">
                         <a href="showtimes.php" class="inline-block purple-light hover:bg-purple-800 text-white font-bold py-3 px-6 rounded transition duration-300">
                             Cancel

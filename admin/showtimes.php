@@ -3,7 +3,55 @@ spl_autoload_register(function ($class)
 {include"../classes/".$class.".php";});
 //check of the user is logged in:
 $session = new AdminSessionHandler();
-$session->confirm_logged_in()
+$session->confirm_logged_in();
+
+$showtimeCRUD = new ShowtimeCRUD();
+$movies = $showtimeCRUD->getAllMovies();
+$halls = $showtimeCRUD->getAllHalls();
+
+$message = "";
+if (isset($_SESSION['message'])) {
+    $message = $_SESSION['message'];
+    unset($_SESSION['message']); // clear it so it shows only once
+}
+
+// Handle form submission
+$showtimeCRUD = new ShowtimeCRUD();
+$movies = $showtimeCRUD->getAllMovies();
+$halls = $showtimeCRUD->getAllHalls();
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $movie_id = $_POST['movie_id'];
+    $hall_id = $_POST['hall_id'];
+    $show_date = $_POST['show_date'];
+    $show_time = $_POST['show_time'];
+
+    if ($showtimeCRUD->create($show_date, $show_time, $hall_id, $movie_id)) {
+        $_SESSION['message'] = "<p class='text-green-400 font-semibold'>Showtime added successfully!</p>";
+    } else {
+        $_SESSION['message'] = "<p class='text-red-400 font-semibold'>Error adding showtime. Please check inputs.</p>";
+    }
+
+    // Redirect to avoid form resubmission
+    header("Location: showtimes.php");
+    exit;
+}
+
+// Handle delete request
+if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+    $id = (int)$_GET['delete'];
+
+    if ($showtimeCRUD->delete($id)) {
+        $_SESSION['message'] = "<p class='text-green-400 font-semibold'>Showtime deleted successfully!</p>";
+    } else {
+        $_SESSION['message'] = "<p class='text-red-400 font-semibold'>Error deleting showtime. Please try again.</p>";
+    }
+
+    // Redirect to prevent repeated deletions on refresh
+    header("Location: showtimes.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -100,31 +148,45 @@ $session->confirm_logged_in()
         <!-- Add Showtime Form -->
         <div id="add-showtime-section" class="purple-dark rounded-lg shadow-xl p-8">
             <h2 class="horror-font text-3xl blood-red mb-6">Add New Showtime</h2>
-            <form class="space-y-6">
+            <?php if (!empty($message)): ?>
+                <div class="mb-6 px-6 py-3 rounded text-center border w-full mx-auto
+                    <?php echo (strpos($message, 'successfully') !== false)
+                            ? 'bg-green-900 text-green-200 border-green-700'
+                            : 'bg-red-900 text-red-200 border-red-700'; ?>">
+                    <?php echo $message; ?>
+                </div>
+            <?php endif; ?>
+            <form method="post" class="space-y-6">
                 <div>
                     <label for="showtime-movie" class="block mb-2">Movie Title</label>
-                    <select id="showtime-movie" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <select name="movie_id" id="showtime-movie" required
+                            class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                         <option value="">Select a movie</option>
-                        <option value="1">The Exorcist</option>
-                        <option value="2">Halloween</option>
-                        <option value="3">The Texas Chain Saw Massacre</option>
+                        <?php foreach ($movies as $movie): ?>
+                            <option value="<?php echo $movie['movie_id']; ?>">
+                                <?php echo htmlspecialchars($movie['title']); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div>
                     <label for="showtime-date" class="block mb-2">Date</label>
-                    <input type="date" id="showtime-date" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <input type="date" name="show_date" id="showtime-date" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
                     <label for="showtime-time" class="block mb-2">Time</label>
-                    <input type="time" id="showtime-time" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <input type="time" name="show_time" id="showtime-time" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
                     <label for="showtime-hall" class="block mb-2">Hall</label>
-                    <select id="showtime-hall" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <select name="hall_id" id="showtime-hall" required
+                            class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                         <option value="">Select a hall</option>
-                        <option value="Hall A">Hall A</option>
-                        <option value="Hall B">Hall B</option>
-                        <option value="Hall C">Hall C</option>
+                        <?php foreach ($halls as $hall): ?>
+                            <option value="<?php echo $hall['hall_id']; ?>">
+                                <?php echo htmlspecialchars($hall['hall_name']); ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <button type="submit" class="w-full moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
@@ -148,48 +210,36 @@ $session->confirm_logged_in()
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="border-b border-gray-700">
-                        <td class="py-4">The Exorcist</td>
-                        <td class="py-4">October 31, 2023</td>
-                        <td class="py-4">19:00</td>
-                        <td class="py-4">Hall A</td>
-                        <td class="py-4">
-                            <a href="edit-showtime.php?id=1" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
-                                <i data-feather="edit" class="mr-1"></i> Edit
-                            </a>
-                            <button class="text-red-400 hover:text-red-300">
-                                <i data-feather="trash-2" class="mr-1"></i> Delete
-                            </button>
-                        </td>
-                    </tr>
-                    <tr class="border-b border-gray-700">
-                        <td class="py-4">Halloween</td>
-                        <td class="py-4">October 30, 2023</td>
-                        <td class="py-4">20:30</td>
-                        <td class="py-4">Hall B</td>
-                        <td class="py-4">
-                            <a href="edit-showtime.php?id=2" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
-                                <i data-feather="edit" class="mr-1"></i> Edit
-                            </a>
-                            <button class="text-red-400 hover:text-red-300">
-                                <i data-feather="trash-2" class="mr-1"></i> Delete
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="py-4">The Texas Chain Saw Massacre</td>
-                        <td class="py-4">October 29, 2023</td>
-                        <td class="py-4">22:00</td>
-                        <td class="py-4">Hall C</td>
-                        <td class="py-4">
-                            <a href="edit-showtime.php?id=3" class="inline-block mr-2 text-yellow-400 hover:text-yellow-300">
-                                <i data-feather="edit" class="mr-1"></i> Edit
-                            </a>
-                            <button class="text-red-400 hover:text-red-300">
-                                <i data-feather="trash-2" class="mr-1"></i> Delete
-                            </button>
-                        </td>
-                    </tr>
+                    <?php
+                    $showtimes = $showtimeCRUD->getAllShowtimes();
+                    if ($showtimes):
+                        foreach ($showtimes as $showtime):
+                            ?>
+                            <tr class="border-b border-gray-700">
+                                <td class="py-4"><?php echo htmlspecialchars($showtime['movie_title']); ?></td>
+                                <td class="py-4"><?php echo date('j M Y', strtotime($showtime['show_date'])); ?></td>
+                                <td class="py-4"><?php echo substr($showtime['show_time'], 0, 5); ?></td>
+                                <td class="py-4"><?php echo htmlspecialchars($showtime['hall_name']); ?></td>
+                                <td class="py-4">
+                                    <div class="flex items-center space-x-3">
+                                        <a href="edit-showtime.php?id=<?php echo $showtime['showtime_id']; ?>"
+                                           class="flex items-center text-yellow-400 hover:text-yellow-300">
+                                            <i data-feather="edit" class="mr-1"></i> Edit
+                                        </a>
+                                        <a href="showtimes.php?delete=<?php echo $showtime['showtime_id']; ?>"
+                                           onclick="return confirm('Are you sure you want to delete this showtime?');"
+                                           class="flex items-center text-red-400 hover:text-red-300">
+                                            <i data-feather="trash-2" class="mr-1"></i> Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php
+                        endforeach;
+                    else:
+                        ?>
+                        <tr><td colspan="5" class="py-4 text-center text-gray-400">No showtimes found.</td></tr>
+                    <?php endif; ?>
                     </tbody>
                 </table>
             </div>
