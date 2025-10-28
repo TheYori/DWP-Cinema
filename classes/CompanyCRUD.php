@@ -24,8 +24,10 @@ class CompanyCRUD
     public function create($data_key, $key_value)
     {
         $query = $this->db->prepare("INSERT INTO Company (data_key, key_value) VALUES (:data_key, :key_value)");
-        $query->bindParam(':data_key', $data_key);
-        $query->bindParam(':key_value', $key_value);
+        $san_data_key = htmlspecialchars($data_key);
+        $san_key_value = htmlspecialchars($key_value);
+        $query->bindParam(':data_key', $san_data_key);
+        $query->bindParam(':key_value', $san_key_value);
         return $query->execute();
     }
 

@@ -46,14 +46,20 @@ class RegisterNewUser
                 (first_name, last_name, phone_number, birth_date, email, street, postal_code, user_password)
                 VALUES (:fname, :lname, :phone, :birth_date, :email, :street, :postal_code, :password)
             ");
-
-            $query->bindParam(':fname', $fname);
-            $query->bindParam(':lname', $lname);
-            $query->bindParam(':phone', $phone);
-            $query->bindParam(':birth_date', $birthDate);
-            $query->bindParam(':email', $email);
-            $query->bindParam(':street', $street);
-            $query->bindParam(':postal_code', $postalCode, PDO::PARAM_INT);
+            $san_fname = htmlspecialchars($fname);
+            $san_lname = htmlspecialchars($lname);
+            $san_phone = htmlspecialchars($phone);
+            $san_BirthDate = htmlspecialchars($birthDate);
+            $san_email = htmlspecialchars($email);
+            $san_street = htmlspecialchars($street);
+            $san_postalCode = htmlspecialchars($postalCode);
+            $query->bindParam(':fname', $san_fname);
+            $query->bindParam(':lname', $san_lname);
+            $query->bindParam(':phone', $san_phone);
+            $query->bindParam(':birth_date', $san_BirthDate);
+            $query->bindParam(':email', $san_email);
+            $query->bindParam(':street', $san_street);
+            $query->bindParam(':postal_code', $san_postalCode, PDO::PARAM_INT);
             $query->bindParam(':password', $hashed_password);
 
             if ($query->execute()) {

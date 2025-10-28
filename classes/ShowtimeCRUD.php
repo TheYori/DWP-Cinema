@@ -36,10 +36,14 @@ class ShowtimeCRUD
     public function create($show_date, $show_time, $hall_id, $movie_id)
     {
         $query = $this->conn->prepare("INSERT INTO `Showtimes` (show_date, show_time, hall_id, movie_id) VALUES (:show_date, :show_time, :hall_id, :movie_id)");
-        $query->bindParam(':show_date', $show_date);
-        $query->bindParam(':show_time', $show_time);
-        $query->bindParam(':hall_id', $hall_id, PDO::PARAM_INT);
-        $query->bindParam(':movie_id', $movie_id, PDO::PARAM_INT);
+        $san_show_date = htmlspecialchars($show_date);
+        $san_show_time = htmlspecialchars($show_time);
+        $san_hall_id = htmlspecialchars($hall_id);
+        $san_movie_id = htmlspecialchars($movie_id);
+        $query->bindParam(':show_date', $san_show_date);
+        $query->bindParam(':show_time', $san_show_time);
+        $query->bindParam(':hall_id', $san_hall_id, PDO::PARAM_INT);
+        $query->bindParam(':movie_id', $san_movie_id, PDO::PARAM_INT);
         return $query->execute();
     }
 
@@ -47,11 +51,16 @@ class ShowtimeCRUD
     public function update($id, $show_date, $show_time, $hall_id, $movie_id)
     {
         $query = $this->conn->prepare("UPDATE `Showtimes` SET show_date = :show_date, show_time = :show_time, hall_id = :hall_id, movie_id = :movie_id WHERE showtime_id = :id");
-        $query->bindParam(':id', $id, PDO::PARAM_INT);
-        $query->bindParam(':show_date', $show_date);
-        $query->bindParam(':show_time', $show_time);
-        $query->bindParam(':hall_id', $hall_id, PDO::PARAM_INT);
-        $query->bindParam(':movie_id', $movie_id, PDO::PARAM_INT);
+        $san_id = htmlspecialchars($id);
+        $san_show_date = htmlspecialchars($show_date);
+        $san_show_time = htmlspecialchars($show_time);
+        $san_hall_id = htmlspecialchars($hall_id);
+        $san_movie_id = htmlspecialchars($movie_id);
+        $query->bindParam(':id', $san_id, PDO::PARAM_INT);
+        $query->bindParam(':show_date', $san_show_date);
+        $query->bindParam(':show_time', $san_show_time);
+        $query->bindParam(':hall_id', $san_hall_id, PDO::PARAM_INT);
+        $query->bindParam(':movie_id', $san_movie_id, PDO::PARAM_INT);
         return $query->execute();
     }
 

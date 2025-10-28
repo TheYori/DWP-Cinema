@@ -156,14 +156,10 @@ $session = new UserSessionHandler();
                         Welcome to Your <br>Worst Nightmares
                     </h2>
                     <div class="space-y-4 text-lg">
-                        <p class="relative pl-6 before:absolute before:left-0 before:top-2 before:w-3 before:h-3 before:bg-red-600 before:rounded-full">
+                        <p class="text-xl">
                             Established in 1983, Midnight Scream has been the home for horror aficionados seeking the thrill of classic terror.
-                        </p>
-                        <p class="relative pl-6 before:absolute before:left-0 before:top-2 before:w-3 before:h-3 before:bg-red-600 before:rounded-full">
-                            Our haunted halls have screened every nightmare imaginable, from cult B-movies to forgotten fright flicks that will chill you to the bone.
-                        </p>
-                        <p class="relative pl-6 before:absolute before:left-0 before:top-2 before:w-3 before:h-3 before:bg-red-600 before:rounded-full">
                             Experience the golden age of horror with our carefully curated selection of 35mm and 4K restorations.
+                            Our haunted halls have screened every nightmare imaginable, from cult B-movies to forgotten fright flicks that will chill you to the bone.
                         </p>
                     </div>
                     <div class="mt-8 flex flex-wrap gap-4">
@@ -183,7 +179,7 @@ $session = new UserSessionHandler();
 <!-- Daily Showings (added id for anchor link) -->
 <section class="py-16 purple-light">
     <div class="container mx-auto px-6">
-        <h2 class="horror-font text-4xl blood-red text-center mb-12">Today's Terrifying Features</h2>
+        <h2 class="horror-font text-6xl blood-red text-center mb-12">Today's Terrifying Features</h2>
 
         <!-- Movie 1 -->
         <div class="purple-dark rounded-lg shadow-xl overflow-hidden mb-10">
@@ -192,23 +188,27 @@ $session = new UserSessionHandler();
                     <img src="http://static.photos/horror/640x360/666" alt="Movie Poster" class="w-full h-full object-cover">
                 </div>
                 <div class="md:w-2/3 p-6">
-                    <h3 class="horror-font text-3xl blood-red mb-2">Night of the Living Dead</h3>
+                    <h3 class="horror-font text-4xl blood-red mb-2">Night of the Living Dead</h3>
                     <div class="flex flex-wrap gap-4 mb-4">
-                        <span class="text-sm"><i data-feather="clock"></i> 96 min</span>
-                        <span class="text-sm"><i data-feather="film"></i> Horror</span>
-                        <span class="text-sm"><i data-feather="calendar"></i> 1968</span>
-                        <span class="text-sm"><i data-feather="user"></i> George A. Romero</span>
+                        <span class="text-sm text-lg"><i data-feather="clock"></i> 96 min</span>
+                        <span class="text-sm text-lg"><i data-feather="film"></i> Horror</span>
+                        <span class="text-sm text-lg"><i data-feather="calendar"></i> 1968</span>
+                        <span class="text-sm text-lg"><i data-feather="user"></i> George A. Romero</span>
                     </div>
-                    <p class="mb-6">
+                    <p class="mb-6 text-xl">
                         A group of people hide from bloodthirsty zombies in a farmhouse. But as the dead rise, the living become the real threat.
                         This groundbreaking classic redefined horror and birthed the modern zombie genre.
                     </p>
                     <div class="flex flex-wrap gap-3">
-                        <a href="booking.php?movie=Night%20of%20the%20Living%20Dead&date=Today&time=19:00&hall=Hall%20A&price=12.50" class="moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                            <i data-feather="tv"></i> Hall A - 19:00
+                        <a href="booking.php?movie=Night%20of%20the%20Living%20Dead&date=Today&time=19:00&hall=Hall%20A&price=12.50" class="moss-green hover:bg-green-900 text-white py-4 px-6 rounded transition duration-300">
+                            <i data-feather="tv"></i> Hall A
+                            <br>
+                            <i data-feather="tv"></i> 19:00
                         </a>
-                        <a href="booking.php?movie=Night%20of%20the%20Living%20Dead&date=Today&time=22:30&hall=Hall%20B&price=12.50" class="moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                            <i data-feather="tv"></i> Hall B - 22:30
+                        <a href="booking.php?movie=Night%20of%20the%20Living%20Dead&date=Today&time=22:30&hall=Hall%20B&price=12.50" class="moss-green hover:bg-green-900 text-white py-4 px-6 rounded transition duration-300">
+                            <i data-feather="tv"></i> Hall B
+                            <br>
+                            <i data-feather="tv"></i> 22:30
                         </a>
                     </div>
                 </div>
@@ -222,23 +222,27 @@ $session = new UserSessionHandler();
                     <img src="http://static.photos/horror/640x360/42" alt="Movie Poster" class="w-full h-full object-cover">
                 </div>
                 <div class="md:w-2/3 p-6">
-                    <h3 class="horror-font text-3xl blood-red mb-2">The Texas Chain Saw Massacre</h3>
+                    <h3 class="horror-font text-4xl blood-red mb-2">The Texas Chain Saw Massacre</h3>
                     <div class="flex flex-wrap gap-4 mb-4">
-                        <span class="text-sm"><i data-feather="clock"></i> 83 min</span>
-                        <span class="text-sm"><i data-feather="film"></i> Horror</span>
-                        <span class="text-sm"><i data-feather="calendar"></i> 1974</span>
-                        <span class="text-sm"><i data-feather="user"></i> Tobe Hooper</span>
+                        <span class="text-sm text-lg"><i data-feather="clock"></i> 83 min</span>
+                        <span class="text-sm text-lg"><i data-feather="film"></i> Horror</span>
+                        <span class="text-sm text-lg"><i data-feather="calendar"></i> 1974</span>
+                        <span class="text-sm text-lg"><i data-feather="user"></i> Tobe Hooper</span>
                     </div>
-                    <p class="mb-6">
+                    <p class="mb-6 text-xl">
                         Five friends visiting their grandfather's old house are hunted down by a chainsaw-wielding killer and his family of grave-robbing cannibals.
                         This relentlessly intense horror masterpiece will leave you traumatized.
                     </p>
                     <div class="flex flex-wrap gap-3">
-                        <a href="booking.php?movie=The%20Texas%20Chain%20Saw%20Massacre&date=Today&time=20:15&hall=Hall%20C&price=12.50" class="moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                            <i data-feather="tv"></i> Hall C - 20:15
+                        <a href="booking.php?movie=The%20Texas%20Chain%20Saw%20Massacre&date=Today&time=20:15&hall=Hall%20C&price=12.50" class="moss-green hover:bg-green-900 text-white py-4 px-6 rounded transition duration-300">
+                            <i data-feather="tv"></i> Hall C
+                            <br>
+                            <i data-feather="tv"></i> 20:15
                         </a>
-                        <a href="booking.php?movie=The%20Texas%20Chain%20Saw%20Massacre&date=Today&time=23:45&hall=Hall%20A&price=15.00" class="moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                            <i data-feather="tv"></i> Hall A - 23:45
+                        <a href="booking.php?movie=The%20Texas%20Chain%20Saw%20Massacre&date=Today&time=23:45&hall=Hall%20A&price=15.00" class="moss-green hover:bg-green-900 text-white py-4 px-6 rounded transition duration-300">
+                            <i data-feather="tv"></i> Hall A
+                            <br>
+                            <i data-feather="tv"></i> 23:45
                         </a>
                     </div>
                 </div>
@@ -250,7 +254,7 @@ $session = new UserSessionHandler();
 <!-- News Section -->
 <section class="py-16 purple-light">
     <div class="container mx-auto px-6">
-        <h2 class="horror-font text-4xl blood-red text-center mb-12">Grave News</h2>
+        <h2 class="horror-font text-6xl blood-red text-center mb-12">Grave News</h2>
         <div class="grid md:grid-cols-3 gap-8">
             <!-- News 1 -->
             <div class="purple-dark rounded-lg shadow-xl overflow-hidden">

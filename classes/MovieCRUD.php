@@ -36,13 +36,20 @@ class MovieCRUD
 
         $query = $this->conn->prepare("INSERT INTO Movies (title, movie_length, debut_date, rating, director, genre, movie_desc, poster) VALUES (:title, :movie_length, :debut_date, :rating, :director, :genre, :movie_desc, :poster)");
 
-        $query->bindParam(":title", $title);
-        $query->bindParam(":movie_length", $movie_length);
-        $query->bindParam(":debut_date", $debut_date);
-        $query->bindParam(":rating", $rating);
-        $query->bindParam(":director", $director);
-        $query->bindParam(":genre", $genre);
-        $query->bindParam(":movie_desc", $movie_desc);
+        $san_title = htmlspecialchars($title);
+        $san_movie_length = htmlspecialchars($movie_length);
+        $san_debut_date = htmlspecialchars($debut_date);
+        $san_rating = htmlspecialchars($rating);
+        $san_director = htmlspecialchars($director);
+        $san_genre = htmlspecialchars($genre);
+        $san_movie_desc = htmlspecialchars($movie_desc);
+        $query->bindParam(":title", $san_title);
+        $query->bindParam(":movie_length", $san_movie_length);
+        $query->bindParam(":debut_date", $san_debut_date);
+        $query->bindParam(":rating", $san_rating);
+        $query->bindParam(":director", $san_director);
+        $query->bindParam(":genre", $san_genre);
+        $query->bindParam(":movie_desc", $san_movie_desc);
         $query->bindParam(":poster", $poster);
 
         return $query->execute();
@@ -67,15 +74,22 @@ class MovieCRUD
         {
             $query = $this->conn->prepare("UPDATE Movies SET title = :title, movie_length = :movie_length, debut_date = :debut_date, rating = :rating, director = :director, genre = :genre, movie_desc = :movie_desc WHERE movie_id = :id");
         }
-
-        $query->bindParam(":title", $title);
-        $query->bindParam(":movie_length", $movie_length);
-        $query->bindParam(":debut_date", $debut_date);
-        $query->bindParam(":rating", $rating);
-        $query->bindParam(":director", $director);
-        $query->bindParam(":genre", $genre);
-        $query->bindParam(":movie_desc", $movie_desc);
-        $query->bindParam(":id", $id);
+        $san_title = htmlspecialchars($title);
+        $san_movie_length = htmlspecialchars($movie_length);
+        $san_debut_date = htmlspecialchars($debut_date);
+        $san_rating = htmlspecialchars($rating);
+        $san_director = htmlspecialchars($director);
+        $san_genre = htmlspecialchars($genre);
+        $san_movie_desc = htmlspecialchars($movie_desc);
+        $san_id= htmlspecialchars($id);
+        $query->bindParam(":title", $san_title);
+        $query->bindParam(":movie_length", $san_movie_length);
+        $query->bindParam(":debut_date", $san_debut_date);
+        $query->bindParam(":rating", $san_rating);
+        $query->bindParam(":director", $san_director);
+        $query->bindParam(":genre", $san_genre);
+        $query->bindParam(":movie_desc", $san_movie_desc);
+        $query->bindParam(":id", $san_id);
         return $query->execute();
     }
 

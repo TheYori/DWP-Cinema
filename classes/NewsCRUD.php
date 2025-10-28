@@ -36,9 +36,12 @@ class NewsCRUD
         }
 
         $query = $this->conn->prepare("INSERT INTO News (title, content, release_date, banner_img) VALUES (:title, :content, :release_date, :banner_img)");
-        $query->bindParam(':title', $title);
-        $query->bindParam(':content', $content);
-        $query->bindParam(':release_date', $release_date);
+        $san_title = htmlspecialchars($title);
+        $san_content = htmlspecialchars($content);
+        $san_release_date = htmlspecialchars($release_date);
+        $query->bindParam(':title', $san_title);
+        $query->bindParam(':content', $san_content);
+        $query->bindParam(':release_date', $san_release_date);
         $query->bindParam(':banner_img', $banner_img);
         return $query->execute();
     }
@@ -61,10 +64,12 @@ class NewsCRUD
         {
             $query = $this->conn->prepare("UPDATE News SET title = :title, content = :content, release_date = :release_date WHERE news_id = :id");
         }
-
-        $query->bindParam(':title', $title);
-        $query->bindParam(':content', $content);
-        $query->bindParam(':release_date', $release_date);
+        $san_title = htmlspecialchars($title);
+        $san_content = htmlspecialchars($content);
+        $san_release_date = htmlspecialchars($release_date);
+        $query->bindParam(':title', $san_title);
+        $query->bindParam(':content', $san_content);
+        $query->bindParam(':release_date', $san_release_date);
         $query->bindParam(':id', $id, PDO::PARAM_INT);
         return $query->execute();
     }

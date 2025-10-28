@@ -96,7 +96,7 @@ if (isset($_POST['submit']))
 
             <form action="login.php" method="POST" class="space-y-6">
                 <div>
-                    <label for="email" class="block mb-2">Username</label>
+                    <label for="email" class="block mb-2">Email</label>
                     <input type="text" id="email" name="email" required class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
