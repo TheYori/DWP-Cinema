@@ -81,7 +81,7 @@ CREATE TABLE Movies(
     rating FLOAT, -- As the movie can be pre-release it might not be rated
     director VARCHAR(120) NOT NULL,
     genre VARCHAR(50) NOT NULL,
-    movie_desc VARCHAR(500) NOT NULL,
+    movie_desc TEXT NOT NULL,
     poster VARCHAR(255),
     hall_id INT,
     FOREIGN KEY (hall_id) REFERENCES Halls (hall_id)
@@ -123,6 +123,11 @@ CREATE TABLE Will_have(
 -- CRUD via admin back-end panel does not take priority
 INSERT INTO Halls (hall_name) VALUES ('Grimm Hall');
 INSERT INTO Halls (hall_name) VALUES ('Wendigo Den');
+
+-- MOVIE DATA --
+-- As it is easier to drop the entire Database when going live on Simply.com I have chosen to hardcode.
+-- CRUD functions work perfectly, so this is just easier for me to maintain in the long run.
+
 
 -- POSTAL CODE DATA --
 -- All this data is permanent and will not change
