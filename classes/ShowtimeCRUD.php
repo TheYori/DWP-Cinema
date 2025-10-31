@@ -17,7 +17,7 @@ class ShowtimeCRUD
         FROM `Showtimes` s
         INNER JOIN Halls h ON s.hall_id = h.hall_id
         INNER JOIN Movies m ON s.movie_id = m.movie_id
-        ORDER BY s.show_date ASC, s.show_time ASC
+        ORDER BY s.show_date ASC
         ");
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
