@@ -3,6 +3,14 @@ spl_autoload_register(function ($class)
 {include"classes/".$class.".php";});
 //check of the user is logged in:
 $session = new UserSessionHandler();
+
+$company = new CompanyDisplay();
+$showtimeDisplay = new ShowtimeDisplay();
+$newsDisplay = new NewsDisplay();
+
+$welcomeText = $company->getPresentation("Welcome to Midnight Scream");
+$moviesToShow = $showtimeDisplay->getShowings();
+$recentNews = $newsDisplay->getRecentNews();
 ?>
 
 <!DOCTYPE html>
@@ -154,13 +162,11 @@ $session = new UserSessionHandler();
                 </div>
                 <div class="lg:w-1/2">
                     <h2 class="horror-font text-5xl blood-red mb-6">
-                        Welcome to Your <br>Worst Nightmares
+                        Welcome to Midnight Scream
                     </h2>
                     <div class="space-y-4 text-lg">
                         <p class="text-xl">
-                            Established in 1983, Midnight Scream has been the home for horror aficionados seeking the thrill of classic terror.
-                            Experience the golden age of horror with our carefully curated selection of 35mm and 4K restorations.
-                            Our haunted halls have screened every nightmare imaginable, from cult B-movies to forgotten fright flicks that will chill you to the bone.
+                            <?php echo nl2br(htmlspecialchars($welcomeText)); ?>
                         </p>
                     </div>
                     <div class="mt-8 flex flex-wrap gap-4">
@@ -182,73 +188,41 @@ $session = new UserSessionHandler();
     <div class="container mx-auto px-6">
         <h2 class="horror-font text-6xl blood-red text-center mb-12">Today's Terrifying Features</h2>
 
-        <!-- Movie 1 -->
-        <div class="purple-dark rounded-lg shadow-xl overflow-hidden mb-10">
-            <div class="md:flex">
-                <div class="md:w-1/4">
-                    <img src="http://static.photos/horror/640x360/666" alt="Movie Poster" class="w-full h-full object-cover">
-                </div>
-                <div class="md:w-2/3 p-6">
-                    <h3 class="horror-font text-4xl blood-red mb-2">Night of the Living Dead</h3>
-                    <div class="flex flex-wrap gap-4 mb-4">
-                        <span class="text-sm text-lg"><i data-feather="clock"></i> 96 min</span>
-                        <span class="text-sm text-lg"><i data-feather="film"></i> Horror</span>
-                        <span class="text-sm text-lg"><i data-feather="calendar"></i> 1968</span>
-                        <span class="text-sm text-lg"><i data-feather="user"></i> George A. Romero</span>
-                    </div>
-                    <p class="mb-6 text-xl">
-                        A group of people hide from bloodthirsty zombies in a farmhouse. But as the dead rise, the living become the real threat.
-                        This groundbreaking classic redefined horror and birthed the modern zombie genre.
-                    </p>
-                    <div class="flex flex-wrap gap-3">
-                        <a href="booking.php?movie=Night%20of%20the%20Living%20Dead&date=Today&time=19:00&hall=Hall%20A&price=12.50" class="moss-green hover:bg-green-900 text-white py-4 px-6 rounded transition duration-300">
-                            <i data-feather="tv"></i> Hall A
-                            <br>
-                            <i data-feather="tv"></i> 19:00
-                        </a>
-                        <a href="booking.php?movie=Night%20of%20the%20Living%20Dead&date=Today&time=22:30&hall=Hall%20B&price=12.50" class="moss-green hover:bg-green-900 text-white py-4 px-6 rounded transition duration-300">
-                            <i data-feather="tv"></i> Hall B
-                            <br>
-                            <i data-feather="tv"></i> 22:30
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Movie 2 -->
-        <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
-            <div class="md:flex">
-                <div class="md:w-1/4">
-                    <img src="http://static.photos/horror/640x360/42" alt="Movie Poster" class="w-full h-full object-cover">
-                </div>
-                <div class="md:w-2/3 p-6">
-                    <h3 class="horror-font text-4xl blood-red mb-2">The Texas Chain Saw Massacre</h3>
-                    <div class="flex flex-wrap gap-4 mb-4">
-                        <span class="text-sm text-lg"><i data-feather="clock"></i> 83 min</span>
-                        <span class="text-sm text-lg"><i data-feather="film"></i> Horror</span>
-                        <span class="text-sm text-lg"><i data-feather="calendar"></i> 1974</span>
-                        <span class="text-sm text-lg"><i data-feather="user"></i> Tobe Hooper</span>
-                    </div>
-                    <p class="mb-6 text-xl">
-                        Five friends visiting their grandfather's old house are hunted down by a chainsaw-wielding killer and his family of grave-robbing cannibals.
-                        This relentlessly intense horror masterpiece will leave you traumatized.
-                    </p>
-                    <div class="flex flex-wrap gap-3">
-                        <a href="booking.php?movie=The%20Texas%20Chain%20Saw%20Massacre&date=Today&time=20:15&hall=Hall%20C&price=12.50" class="moss-green hover:bg-green-900 text-white py-4 px-6 rounded transition duration-300">
-                            <i data-feather="tv"></i> Hall C
-                            <br>
-                            <i data-feather="tv"></i> 20:15
-                        </a>
-                        <a href="booking.php?movie=The%20Texas%20Chain%20Saw%20Massacre&date=Today&time=23:45&hall=Hall%20A&price=15.00" class="moss-green hover:bg-green-900 text-white py-4 px-6 rounded transition duration-300">
-                            <i data-feather="tv"></i> Hall A
-                            <br>
-                            <i data-feather="tv"></i> 23:45
-                        </a>
+        <?php if (!empty($moviesToShow)): ?>
+            <?php foreach ($moviesToShow as $entry):
+                $movie = $entry['movie'];
+                $showtimes = $entry['showtimes'];
+                ?>
+                <div class="purple-dark rounded-lg shadow-xl overflow-hidden mb-10">
+                    <div class="md:flex">
+                        <div class="md:w-1/4">
+                            <img src="images/movies/<?php echo htmlspecialchars($movie['poster']); ?>" alt="Movie Poster" class="w-full h-full object-cover">
+                        </div>
+                        <div class="md:w-2/3 p-6">
+                            <h3 class="horror-font text-4xl blood-red mb-2"><?php echo htmlspecialchars($movie['title']); ?></h3>
+                            <div class="flex flex-wrap gap-4 mb-4">
+                                <span class="text-sm text-lg"><i data-feather="clock"></i> <?php echo $movie['movie_length']; ?> min</span>
+                                <span class="text-sm text-lg"><i data-feather="film"></i> <?php echo htmlspecialchars($movie['genre']); ?></span>
+                                <span class="text-sm text-lg"><i data-feather="calendar"></i> <?php echo date('Y', strtotime($movie['debut_date'])); ?></span>
+                                <span class="text-sm text-lg"><i data-feather="user"></i> <?php echo htmlspecialchars($movie['director']); ?></span>
+                            </div>
+                            <p class="mb-6 text-xl"><?php echo htmlspecialchars($movie['movie_desc']); ?></p>
+                            <div class="flex flex-wrap gap-3">
+                                <?php foreach ($showtimes as $show): ?>
+                                    <a href="booking.php?movie=<?php echo urlencode($movie['title']); ?>&date=<?php echo $movie['show_date']; ?>&time=<?php echo $show['time']; ?>&hall=<?php echo urlencode($show['hall']); ?>"
+                                       class="moss-green hover:bg-green-900 text-white py-4 px-6 rounded transition duration-300">
+                                        <i data-feather="tv"></i> <?php echo htmlspecialchars($show['hall']); ?><br>
+                                        <?php echo htmlspecialchars($show['time']); ?>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p class="text-center text-gray-400 text-lg">No upcoming showings available.</p>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -257,47 +231,18 @@ $session = new UserSessionHandler();
     <div class="container mx-auto px-6">
         <h2 class="horror-font text-6xl blood-red text-center mb-12">Grave News</h2>
         <div class="grid md:grid-cols-3 gap-8">
-            <!-- News 1 -->
-            <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
-                <img src="http://static.photos/horror/640x360/13" alt="News Image" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="horror-font text-2xl blood-red mb-3">All-Night Horror Marathon!</h3>
-                    <p class="mb-4">
-                        Join us this Halloween for 12 hours of uninterrupted horror classics. From dusk till dawn, we'll be screening rare 35mm prints of forbidden frights.
-                    </p>
-                    <a href="#" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                        Read More <i data-feather="arrow-right" class="inline"></i>
-                    </a>
+            <?php foreach ($recentNews as $news): ?>
+                <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
+                    <img src="images/news/<?php echo htmlspecialchars($news['banner_img']); ?>" alt="News Image" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="horror-font text-2xl blood-red mb-3"><?php echo htmlspecialchars($news['title']); ?></h3>
+                        <p class="mb-4"><?php echo nl2br(htmlspecialchars(substr($news['content'], 0, 100))); ?>...</p>
+                        <a href="news.php?id=<?php echo $news['news_id']; ?>" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
+                            Read More <i data-feather="arrow-right" class="inline"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
-
-            <!-- News 2 -->
-            <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
-                <img src="http://static.photos/horror/640x360/666" alt="News Image" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="horror-font text-2xl blood-red mb-3">Newly Restored: The Beyond</h3>
-                    <p class="mb-4">
-                        Lucio Fulci's gory masterpiece returns in a stunning 4K restoration for one week only. Experience the gates of hell like never before.
-                    </p>
-                    <a href="#" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                        Read More <i data-feather="arrow-right" class="inline"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- News 3 -->
-            <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
-                <img src="http://static.photos/horror/640x360/99" alt="News Image" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="horror-font text-2xl blood-red mb-3">Midnight Madness Sale</h3>
-                    <p class="mb-4">
-                        For one night only, all vintage horror posters and memorabilia will be 50% off from midnight to 3am. Come if you dare...
-                    </p>
-                    <a href="#" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                        Read More <i data-feather="arrow-right" class="inline"></i>
-                    </a>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
