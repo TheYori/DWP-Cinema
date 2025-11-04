@@ -113,6 +113,13 @@ $session->confirm_logged_in()
                     <span class="flex items-center"><i data-feather="clock" class="mr-2"></i> 19:00</span>
                     <span class="flex items-center"><i data-feather="tv" class="mr-2"></i> Hall A</span>
                 </div>
+                <div>
+                    <p><b>Rules:</b></p>
+                    <ol type="1">
+                        <li><b>1.</b> You can only select seats right besides each other</li>
+                        <li><b>2.</b> You only pick seats from a single row</li>
+                    </ol>
+                </div>
             </div>
         </div>
 
