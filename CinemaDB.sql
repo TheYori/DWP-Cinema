@@ -70,9 +70,7 @@ CREATE TABLE Halls(
 CREATE TABLE Seats(
     seat_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     seat_name VARCHAR(20) NOT NULL,
-    parent_id int NULL,
     hall_id int NOT NULL,
-    FOREIGN KEY (parent_id) REFERENCES Seats(seat_id),
     FOREIGN KEY (hall_id) REFERENCES Halls (hall_id)
 );
 
@@ -148,6 +146,28 @@ INSERT INTO `company` (`key_id`, `data_key`, `key_value`) VALUES
 -- CRUD via admin back-end panel does not take priority
 INSERT INTO Halls (hall_name) VALUES ('Grimm Hall');
 INSERT INTO Halls (hall_name) VALUES ('Wendigo Den');
+
+
+INSERT INTO Seats (seat_name, hall_id) VALUES
+-- Hall 1
+('Seat A1-1', 1), ('Seat A1-2', 1), ('Seat A1-3', 1), ('Seat A1-4', 1),
+('Seat A1-5', 1), ('Seat A1-6', 1), ('Seat A1-7', 1), ('Seat A1-8', 1),
+('Seat A2-1', 1), ('Seat A2-2', 1), ('Seat A2-3', 1), ('Seat A2-4', 1),
+('Seat A2-5', 1), ('Seat A2-6', 1), ('Seat A2-7', 1), ('Seat A2-8', 1),
+('Seat A3-1', 1), ('Seat A3-2', 1), ('Seat A3-3', 1), ('Seat A3-4', 1),
+('Seat A3-5', 1), ('Seat A3-6', 1), ('Seat A3-7', 1), ('Seat A3-8', 1),
+('Seat A4-1', 1), ('Seat A4-2', 1), ('Seat A4-3', 1), ('Seat A4-4', 1),
+('Seat A4-5', 1), ('Seat A4-6', 1), ('Seat A4-7', 1), ('Seat A4-8', 1),
+
+-- Hall 2
+('Seat B1-1', 2), ('Seat B1-2', 2), ('Seat B1-3', 2),
+('Seat B1-4', 2), ('Seat B1-5', 2), ('Seat B1-6', 2),
+('Seat B2-1', 2), ('Seat B2-2', 2), ('Seat B2-3', 2),
+('Seat B2-4', 2), ('Seat B2-5', 2), ('Seat B2-6', 2),
+('Seat B3-1', 2), ('Seat B3-2', 2), ('Seat B3-3', 2),
+('Seat B3-4', 2), ('Seat B3-5', 2), ('Seat B3-6', 2),
+('Seat B4-1', 2), ('Seat B4-2', 2), ('Seat B4-3', 2),
+('Seat B4-4', 2), ('Seat B4-5', 2), ('Seat B4-6', 2);
 
 -- MOVIE DATA --
 -- All of this data was inserted through the admin panel.
