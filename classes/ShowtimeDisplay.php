@@ -16,7 +16,7 @@ class ShowtimeDisplay {
 
         // FIRST: Try current date's showings
         $queryToday = "
-        SELECT m.movie_id, m.title, m.poster, m.movie_length, m.genre, m.director, m.debut_date, m.movie_desc, s.show_date, s.show_time, h.hall_name 
+        SELECT s.Showtime_id, m.movie_id, m.title, m.poster, m.movie_length, m.genre, m.director, m.debut_date, m.movie_desc, s.show_date, s.show_time, h.hall_name
         FROM Showtimes s
         JOIN Movies m ON s.movie_id = m.movie_id
         JOIN Halls h ON s.hall_id = h.hall_id
@@ -37,8 +37,8 @@ class ShowtimeDisplay {
 
             if ($nextDate)
             {
-               $stmt = $this->conn->prepare("
-                SELECT m.movie_id, m.title, m.poster, m.movie_length, m.genre, m.director, m.debut_date, m.movie_desc, s.show_date, s.show_time, h.hall_name 
+                $stmt = $this->conn->prepare("
+                SELECT s.Showtime_id, m.movie_id, m.title, m.poster, m.movie_length, m.genre, m.director, m.debut_date, m.movie_desc, s.show_date, s.show_time, h.hall_name
                 FROM Showtimes s
                 JOIN Movies m ON s.movie_id = m.movie_id
                 JOIN Halls h ON s.hall_id = h.hall_id
@@ -59,7 +59,7 @@ class ShowtimeDisplay {
             {
                 $group[$movie_id] = ['movie' => $showing, 'showtimes' => []];
             }
-            $group[$movie_id]['showtimes'][] = ['hall'=> $showing['hall_name'], 'time'=>substr($showing['show_time'], 0, 5)];
+            $group[$movie_id]['showtimes'][] = ['Showtime_id' => $showing['Showtime_id'], 'hall' => $showing['hall_name'], 'time' => substr($showing['show_time'], 0, 5)];
         }
 
         // LASTLY: Set a limit

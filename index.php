@@ -209,7 +209,7 @@ $recentNews = $newsDisplay->getRecentNews();
                             <p class="mb-6 text-xl"><?php echo htmlspecialchars($movie['movie_desc']); ?></p>
                             <div class="flex flex-wrap gap-3">
                                 <?php foreach ($showtimes as $show): ?>
-                                    <a href="booking.php?movie=<?php echo urlencode($movie['title']); ?>&date=<?php echo $movie['show_date']; ?>&time=<?php echo $show['time']; ?>&hall=<?php echo urlencode($show['hall']); ?>"
+                                    <a href="booking.php?showtime_id=<?php echo urlencode($show['Showtime_id']); ?>"
                                        class="moss-green hover:bg-green-900 text-white py-4 px-6 rounded transition duration-300">
                                         <i data-feather="tv"></i> <?php echo htmlspecialchars($show['hall']); ?><br>
                                         <?php echo htmlspecialchars($show['time']); ?>
