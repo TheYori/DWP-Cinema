@@ -7,7 +7,7 @@ class LoginUser
         $db = new DatabaseCon();
         $username = trim($email);
         $pass = trim($password);
-        $query = $db->databaseCon->prepare("SELECT user_id, email, user_password FROM users WHERE email = '{$email}' LIMIT 1");
+        $query = $db->databaseCon->prepare("SELECT user_id, email, user_password FROM Users WHERE email = '{$email}' LIMIT 1");
         if($query->execute())
         {
             $found_user = $query->fetchAll();

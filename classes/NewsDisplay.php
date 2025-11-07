@@ -16,7 +16,7 @@ class NewsDisplay
         $today = date("Y-m-d");
         $query = "
         SELECT news_id, release_date, title, content, banner_img 
-        FROM news
+        FROM News
         WHERE release_date <= ?
         ORDER BY release_date DESC
         LIMIT ?";

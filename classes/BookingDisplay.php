@@ -26,20 +26,11 @@ class BookingDisplay
     public function getSeats($hall_id, $showtime_id)
     {
         $query = "
-    SELECT 
-        se.seat_id, 
-        se.seat_name,
-        CASE 
-            WHEN EXISTS (
-                SELECT 1 
-                FROM Will_have wh
-                JOIN Tickets t ON wh.ticket_id = t.ticket_id
-                WHERE wh.seat_id = se.seat_id
-                AND t.Showtime_id = ?
-            )
-            THEN 1 
-            ELSE 0 
-        END AS is_booked
+    SELECT se.seat_id, se.seat_name,
+    CASE WHEN EXISTS (SELECT 1 FROM Will_have wh JOIN Tickets t ON wh.ticket_id = t.ticket_id WHERE wh.seat_id = se.seat_id AND t.Showtime_id = ?)
+    THEN 1 
+    ELSE 0 
+    END AS is_booked
     FROM Seats se
     WHERE se.hall_id = ?
     ORDER BY se.seat_id ASC";
@@ -52,14 +43,7 @@ class BookingDisplay
     public function getUserTickets($user_id)
     {
         $sql = "
-        SELECT 
-            t.ticket_id,
-            t.ticket_date,
-            t.ticket_time,
-            s.show_date,
-            s.show_time,
-            m.title,
-            h.hall_name,
+        SELECT t.ticket_id, t.ticket_date, t.ticket_time, s.show_date, s.show_time, m.title, h.hall_name,
             GROUP_CONCAT(se.seat_name ORDER BY se.seat_name ASC) AS seats,
             (COUNT(se.seat_id) * 12.50 + 2.50) AS total_price
         FROM Tickets t

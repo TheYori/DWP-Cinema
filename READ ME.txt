@@ -30,3 +30,8 @@ FRONT-END:
 - booking.php: Creates ticket on checkout
 - booking.php: When purchase is confirmed the chosen seats are booked and can't be picked again
 - profile.php: Purchases are shown in purchase history section
+
+There are still a few things to keep in mind as you use the website:
+- The nav does no update yet, so even if you are logged in, it still says "login"
+- The live version, hasn't been properly tested yet, so errors can occur
+- Refinement of the live version is planned for the last sprint

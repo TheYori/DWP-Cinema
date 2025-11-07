@@ -41,17 +41,21 @@ class CompanyCRUD
     }
 
     // crUd - Updates selected data in Company Table
-    public function update($id, $data_key, $key_value) {
-        // Im not 100% that this is correct, but hey, it works
-        $sql = "UPDATE Company SET data_key = '$data_key', key_value = '$key_value' WHERE key_id = $id";
-        $stmt = $this->db->prepare($sql);
-        if($stmt->execute())
-        {
-            return true;
-        }
-        else
-        {
-            echo "Something went wrong when updating!";
+    public function update($id, $data_key, $key_value)
+    {
+        try {
+            $sql = "UPDATE Company SET data_key = :data_key, key_value = :key_value WHERE key_id = :id";
+
+            $stmt = $this->db->prepare($sql);
+
+            // Bind parameters safely
+            $stmt->bindParam(':data_key', $data_key, PDO::PARAM_STR);
+            $stmt->bindParam(':key_value', $key_value, PDO::PARAM_STR);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("CompanyCRUD update() failed: " . $e->getMessage());
             return false;
         }
     }

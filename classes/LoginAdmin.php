@@ -7,7 +7,7 @@ class LoginAdmin
         $db = new DatabaseCon();
         $username = trim($username);
         $pass = trim($password);
-        $query = $db->databaseCon->prepare("SELECT admin_id, username, admin_password FROM admins WHERE username = '{$username}' LIMIT 1");
+        $query = $db->databaseCon->prepare("SELECT admin_id, username, admin_password FROM Admins WHERE username = '{$username}' LIMIT 1");
         if($query->execute())
         {
             $found_user = $query->fetchAll();

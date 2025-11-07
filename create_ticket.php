@@ -38,8 +38,7 @@ try {
     $ticket_date = $now->format('Y-m-d');
     $ticket_time = $now->format('H:i:s');
 
-    $stmt = $conn->prepare("INSERT INTO Tickets (ticket_date, ticket_time, user_id, Showtime_id)
-                            VALUES (?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO Tickets (ticket_date, ticket_time, user_id, Showtime_id) VALUES (?, ?, ?, ?)");
     $stmt->execute([$ticket_date, $ticket_time, $user_id, $showtime_id]);
     $ticket_id = $conn->lastInsertId();
 
