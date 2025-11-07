@@ -354,12 +354,33 @@ $seats = $booking->getSeats($showtime['hall_id'], $showtime_id);
             modal.classList.add('hidden');
         });
 
-        confirmBtn.addEventListener('click', () => {
-            // In a real app, this would trigger booking API call
-            //alert(`Booking confirmed for seats: ${selectedSeats.map(s => `${s.row}-${s.col}`).join(', ')}`);
-            modal.classList.add('hidden');
-            window.location.href = 'profile.php';
+        confirmBtn.addEventListener('click', async () => {
+            const seatIds = selectedSeats.map(s => s.id);
+
+            try {
+                const response = await fetch('create_ticket.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        showtime_id: <?php echo (int)$showtime_id; ?>,
+                        seat_ids: seatIds
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    alert('Booking successful! Redirecting to your profile...');
+                    window.location.href = 'profile.php';
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (err) {
+                alert('Failed to complete booking.');
+                console.error(err);
+            }
         });
+
     });
 </script>
 </body>

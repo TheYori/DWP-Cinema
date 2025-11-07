@@ -3,16 +3,27 @@ class UserSessionHandler
 {
     public function __construct()
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 
-    public function logged_in() {
+    public function logged_in()
+    {
         return isset($_SESSION['user_id']);
     }
 
-    public function confirm_logged_in() {
+    public function confirm_logged_in()
+    {
         if (!$this->logged_in()) {
             $redirect = new Redirector("login.php");
         }
     }
+
+    // ✅ Add this missing method
+    public function get_user_id()
+    {
+        return $this->logged_in() ? $_SESSION['user_id'] : null;
+    }
 }
+

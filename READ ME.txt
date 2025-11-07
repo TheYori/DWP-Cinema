@@ -1,0 +1,35 @@
+Hello teachers and censors!
+
+Here is some basic information to access all current features.
+- To get to admin panel look at the footer (bottom left)
+- To log in: 
+	- username = TheYori 
+	- password = 123456
+- To access everything on the front-end create a user
+
+Here is a list of functional features:
+BACK-END:
+- login for admin
+- CRUD for movies
+- CRUD for company information
+- CRUD for showtimes
+- CRUD for news
+- Overview of bookings
+
+FRONT-END:
+- register.php: New user can create a profile
+- login.php: Login for users
+- index.php: Company presentation loaded from DB
+- index.php: Daily showings loaded from DB
+- index.php: Most recent news loaded from DB
+- booking.php: Movie & showing info loaded from DB
+- booking.php: Seats for the specific hall loaded from DB
+- booking.php: Visualisation of seat layout
+- booking.php: Rules for picking seats
+- booking.php: Confirmation modal 
+- booking.php: Creates ticket on checkout
+- booking.php: When purchase is confirmed the chosen seats are booked and can't be picked again
+- profile.php: Purchases are shown in purchase history section
+
+There are still some issues with some functions:
+- booking.php: When seats are booked those seats disappears from all future bookings

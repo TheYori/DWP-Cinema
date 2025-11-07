@@ -40,4 +40,33 @@ class BookingDisplay
         $stmt->execute([$hall_id, $showtime_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getUserTickets($user_id)
+    {
+        $sql = "
+        SELECT 
+            t.ticket_id,
+            t.ticket_date,
+            t.ticket_time,
+            s.show_date,
+            s.show_time,
+            m.title,
+            h.hall_name,
+            GROUP_CONCAT(se.seat_name ORDER BY se.seat_name ASC) AS seats,
+            (COUNT(se.seat_id) * 12.50 + 2.50) AS total_price
+        FROM Tickets t
+        JOIN Showtimes s ON t.Showtime_id = s.Showtime_id
+        JOIN Movies m ON s.movie_id = m.movie_id
+        JOIN Halls h ON s.hall_id = h.hall_id
+        JOIN Will_have wh ON t.ticket_id = wh.ticket_id
+        JOIN Seats se ON wh.seat_id = se.seat_id
+        WHERE t.user_id = ?
+        GROUP BY t.ticket_id
+        ORDER BY t.ticket_date DESC, t.ticket_time DESC
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

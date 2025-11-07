@@ -126,74 +126,36 @@ $session->confirm_logged_in()
         </div>
 
         <!-- Booking History -->
-        <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
-            <div class="p-6">
-                <h2 class="horror-font text-2xl blood-red mb-6">Your Screaming History</h2>
+        <?php
+        $booking = new BookingDisplay();
+        $user_id = $session->get_user_id();
+        $tickets = $booking->getUserTickets($user_id);
 
-                <!-- Booking 1 -->
-                <div class="border-b border-gray-700 pb-6 mb-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="horror-font text-xl blood-red">The Exorcist</h3>
-                        <span class="text-sm">October 31, 2023</span>
-                    </div>
-                    <div class="flex flex-wrap gap-4 mb-4">
-                        <span><i data-feather="clock" class="mr-2"></i> 19:00</span>
-                        <span><i data-feather="tv" class="mr-2"></i> Hall A</span>
-                        <span><i data-feather="dollar-sign" class="mr-2"></i> $37.50 (3 tickets)</span>
-                    </div>
-                    <div class="flex space-x-3">
-                        <button class="text-purple-300 hover:text-purple-200 text-sm">
-                            <i data-feather="download" class="mr-1"></i> Download Tickets
-                        </button>
-                        <button class="text-purple-300 hover:text-purple-200 text-sm">
-                            <i data-feather="refresh-cw" class="mr-1"></i> Book Again
-                        </button>
-                    </div>
-                </div>
+        echo '<div class="purple-dark rounded-lg shadow-xl p-6 mt-8">';
+        echo '<h2 class="horror-font text-2xl blood-red mb-4">Your Tickets</h2>';
 
-                <!-- Booking 2 -->
-                <div class="border-b border-gray-700 pb-6 mb-6">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="horror-font text-xl blood-red">Night of the Living Dead</h3>
-                        <span class="text-sm">October 28, 2023</span>
-                    </div>
-                    <div class="flex flex-wrap gap-4 mb-4">
-                        <span><i data-feather="clock" class="mr-2"></i> 22:30</span>
-                        <span><i data-feather="tv" class="mr-2"></i> Hall B</span>
-                        <span><i data-feather="dollar-sign" class="mr-2"></i> $25.00 (2 tickets)</span>
-                    </div>
-                    <div class="flex space-x-3">
-                        <button class="text-purple-300 hover:text-purple-200 text-sm">
-                            <i data-feather="download" class="mr-1"></i> Download Tickets
-                        </button>
-                        <button class="text-purple-300 hover:text-purple-200 text-sm">
-                            <i data-feather="refresh-cw" class="mr-1"></i> Book Again
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Booking 3 -->
-                <div>
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="horror-font text-xl blood-red">The Texas Chain Saw Massacre</h3>
-                        <span class="text-sm">October 15, 2023</span>
-                    </div>
-                    <div class="flex flex-wrap gap-4 mb-4">
-                        <span><i data-feather="clock" class="mr-2"></i> 20:15</span>
-                        <span><i data-feather="tv" class="mr-2"></i> Hall C</span>
-                        <span><i data-feather="dollar-sign" class="mr-2"></i> $12.50 (1 ticket)</span>
-                    </div>
-                    <div class="flex space-x-3">
-                        <button class="text-purple-300 hover:text-purple-200 text-sm">
-                            <i data-feather="download" class="mr-1"></i> Download Tickets
-                        </button>
-                        <button class="text-purple-300 hover:text-purple-200 text-sm">
-                            <i data-feather="refresh-cw" class="mr-1"></i> Book Again
-                        </button>
-                    </div>
-                </div>
-            </div>
+        if (empty($tickets)) {
+            echo '<p>No tickets purchased yet. Ready to scream?</p>';
+        } else {
+            foreach ($tickets as $t) {
+                echo "
+        <div class='border-b border-gray-700 pb-6 mb-6'>
+            <h3 class='horror-font text-xl blood-red'>".htmlspecialchars($t['title'])."</h3>
+            <p class='text-gray-400'>".htmlspecialchars($t['hall_name'])." — ".date('F j, Y', strtotime($t['show_date']))." at ".substr($t['show_time'], 0, 5)."</p>
+            <p>Seats: ".htmlspecialchars($t['seats'])."</p>
+            <p>Total Price: $".number_format($t['total_price'], 2)."</p>
+            <div class='flex space-x-3 mt-3'>
+            <a class='text-purple-300 hover:text-purple-100 text-sm flex items-center'>
+                <i data-feather=\"download\" class='mr-1'></i> Download Ticket
+            </a>
         </div>
+        </div>";
+            }
+        }
+
+        echo '</div>';
+        ?>
+
     </div>
 </section>
 
