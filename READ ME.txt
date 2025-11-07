@@ -30,6 +30,3 @@ FRONT-END:
 - booking.php: Creates ticket on checkout
 - booking.php: When purchase is confirmed the chosen seats are booked and can't be picked again
 - profile.php: Purchases are shown in purchase history section
-
-There are still some issues with some functions:
-- booking.php: When seats are booked those seats disappears from all future bookings

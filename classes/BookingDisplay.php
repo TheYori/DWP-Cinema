@@ -26,18 +26,26 @@ class BookingDisplay
     public function getSeats($hall_id, $showtime_id)
     {
         $query = "
-        SELECT se.seat_id, se.seat_name,
-        CASE WHEN wh.seat_id IS NOT NULL THEN 1 ELSE 0 END AS is_booked
-        FROM Seats se
-        LEFT JOIN Will_have wh ON se.seat_id = wh.seat_id
-        LEFT JOIN Tickets t ON wh.ticket_id = t.ticket_id
-        LEFT JOIN Showtimes s ON t.Showtime_id = s.Showtime_id
-        WHERE se.hall_id = ?
-        AND (s.Showtime_id = ? OR s.Showtime_id IS NULL)
-        ORDER BY se.seat_id ASC";
+    SELECT 
+        se.seat_id, 
+        se.seat_name,
+        CASE 
+            WHEN EXISTS (
+                SELECT 1 
+                FROM Will_have wh
+                JOIN Tickets t ON wh.ticket_id = t.ticket_id
+                WHERE wh.seat_id = se.seat_id
+                AND t.Showtime_id = ?
+            )
+            THEN 1 
+            ELSE 0 
+        END AS is_booked
+    FROM Seats se
+    WHERE se.hall_id = ?
+    ORDER BY se.seat_id ASC";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->execute([$hall_id, $showtime_id]);
+        $stmt->execute([$showtime_id, $hall_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
