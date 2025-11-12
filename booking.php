@@ -4,6 +4,7 @@ spl_autoload_register(function ($class)
 //check of the user is logged in:
 $session = new UserSessionHandler();
 $session->confirm_logged_in();
+$isLoggedIn = $session->logged_in();
 
 $booking= new BookingDisplay();
 
@@ -114,7 +115,11 @@ $seats = $booking->getSeats($showtime['hall_id'], $showtime_id);
                 <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
                 <a href="news.php" class="text-white hover:text-purple-300">News</a>
                 <a href="about.php" class="text-white hover:text-purple-300">About Us</a>
-                <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                <?php if ($isLoggedIn): ?>
+                    <a href="profile.php" class="text-white hover:text-purple-300">Profile</a>
+                <?php else: ?>
+                    <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                <?php endif; ?>
             </div>
             <div class="md:hidden">
                 <button class="text-white focus:outline-none">

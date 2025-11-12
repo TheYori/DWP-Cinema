@@ -2,6 +2,7 @@
 spl_autoload_register(function ($class)
 {include "classes/".$class.".php";});
 $session = new UserSessionHandler();
+$isLoggedIn = $session->logged_in();
 
 // START FORM PROCESSING
 if (isset($_POST['submit'])) {
@@ -67,7 +68,11 @@ if (isset($_POST['submit'])) {
                 <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
                 <a href="news.php" class="text-white hover:text-purple-300">News</a>
                 <a href="about.php" class="text-white hover:text-purple-300">About Us</a>
-                <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                <?php if ($isLoggedIn): ?>
+                    <a href="profile.php" class="text-white hover:text-purple-300">Profile</a>
+                <?php else: ?>
+                    <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                <?php endif; ?>
             </div>
             <div class="md:hidden">
                 <button class="text-white focus:outline-none">
