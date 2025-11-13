@@ -1,7 +1,7 @@
 <?php
 spl_autoload_register(function ($class)
 {include"../classes/".$class.".php";});
-//check of the user is logged in:
+//check of the admin is logged in:
 $session = new AdminSessionHandler();
 $session->confirm_logged_in();
 
@@ -24,7 +24,7 @@ if (!$news) {
     exit;
 }
 
-// Handle form submission
+// Submission Form
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title']);
     $content = trim($_POST['content']);

@@ -13,7 +13,7 @@ elseif ($session->logged_in())
 {
     $redirect = new Redirector("profile.php");
 }
-// START FORM PROCESSING
+// Start form processing
 if (isset($_POST['submit']))
 { // Form has been submitted.
     $login = new LoginUser($_POST['email'],$_POST['user_password']);

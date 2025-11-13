@@ -34,7 +34,9 @@ class MovieCRUD
             return false;
         }
 
-        $query = $this->conn->prepare("INSERT INTO Movies (title, movie_length, debut_date, rating, director, genre, movie_desc, poster) VALUES (:title, :movie_length, :debut_date, :rating, :director, :genre, :movie_desc, :poster)");
+        $query = $this->conn->prepare("
+        INSERT INTO Movies (title, movie_length, debut_date, rating, director, genre, movie_desc, poster) 
+        VALUES (:title, :movie_length, :debut_date, :rating, :director, :genre, :movie_desc, :poster)");
 
         $san_title = htmlspecialchars($title);
         $san_movie_length = htmlspecialchars($movie_length);

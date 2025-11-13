@@ -4,7 +4,7 @@ spl_autoload_register(function ($class)
 $session = new UserSessionHandler();
 $isLoggedIn = $session->logged_in();
 
-// START FORM PROCESSING
+// Start form processing
 if (isset($_POST['submit'])) {
     $newUser = new RegisterNewUser($_POST['fname'], $_POST['lname'], $_POST['phone'], $_POST['birth_date'], $_POST['email'], $_POST['street'], $_POST['postal_code'], $_POST['city'], $_POST['pass']);
     $msg = $newUser->message;

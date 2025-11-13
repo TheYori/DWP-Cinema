@@ -14,7 +14,7 @@ class ShowtimeDisplay {
     {
         $today = date("Y-m-d");
 
-        // FIRST: Try current date's showings
+        // Try current date's showings
         $queryToday = "
         SELECT s.Showtime_id, m.movie_id, m.title, m.poster, m.movie_length, m.genre, m.director, m.debut_date, m.movie_desc, s.show_date, s.show_time, h.hall_name
         FROM Showtimes s
@@ -27,7 +27,7 @@ class ShowtimeDisplay {
         $stmt->execute([$today]);
         $showings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        //SECOND: If none, try upcoming dates
+        // If none, try upcoming dates
         // only upcoming dates - No past date
         if (count($showings) === 0)
         {
@@ -50,7 +50,7 @@ class ShowtimeDisplay {
             }
         }
 
-        //THIRD: Group movies
+        // Group movies
         $group = [];
         foreach ($showings as $showing)
         {
@@ -62,7 +62,7 @@ class ShowtimeDisplay {
             $group[$movie_id]['showtimes'][] = ['Showtime_id' => $showing['Showtime_id'], 'hall' => $showing['hall_name'], 'time' => substr($showing['show_time'], 0, 5)];
         }
 
-        // LASTLY: Set a limit
+        // Set a limit
         return array_slice($group, 0, $limit);
     }
 }
