@@ -133,7 +133,6 @@ $user = $userProfile->getUserById($user_id);
         <!-- Booking History -->
         <?php
         $booking = new BookingDisplay();
-        $user_id = $session->get_user_id();
         $tickets = $booking->getUserTickets($user_id);
 
         echo '<div class="purple-dark rounded-lg shadow-xl p-6 mt-8">';
@@ -150,17 +149,17 @@ $user = $userProfile->getUserById($user_id);
             <p>Seats: ".htmlspecialchars($t['seats'])."</p>
             <p>Total Price: $".number_format($t['total_price'], 2)."</p>
             <div class='flex space-x-3 mt-3'>
-            <a class='text-purple-300 hover:text-purple-100 text-sm flex items-center'>
-                <i data-feather=\"download\" class='mr-1'></i> Download Ticket
-            </a>
-        </div>
+                <a href='invoice.php?ticket_id=" . (int)$t['ticket_id'] . "' target='_blank'
+                   class='text-purple-300 hover:text-purple-100 text-sm flex items-center'>
+                   <i data-feather=\"download\" class='mr-1'></i> Download Ticket
+                </a>
+            </div>
         </div>";
             }
         }
 
         echo '</div>';
         ?>
-
     </div>
 </section>
 

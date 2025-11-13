@@ -81,6 +81,7 @@ $bookings = $bookingsDisplay->getAllBookings();
                             <th class="pb-3">Show Time</th>
                             <th class="pb-3">Seats</th>
                             <th class="pb-3">Booked On</th>
+                            <th class="pb-3">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -93,6 +94,13 @@ $bookings = $bookingsDisplay->getAllBookings();
                                 <td class="py-3"><?php echo substr($b['show_time'], 0, 5); ?></td>
                                 <td class="py-3"><?php echo htmlspecialchars($b['seats']); ?></td>
                                 <td class="py-3"><?php echo date('M j, Y H:i', strtotime($b['ticket_date'].' '.$b['ticket_time'])); ?></td>
+                                <td class="py-3">
+                                    <a href="../invoice.php?ticket_id=<?= $b['ticket_id']; ?>" target="_blank"
+                                       class="text-purple-300 hover:text-purple-100 text-sm flex items-center">
+                                        <i data-feather='download' class='mr-1'></i> Invoice
+                                    </a>
+                                </td>
+
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
