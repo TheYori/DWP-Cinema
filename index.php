@@ -247,7 +247,7 @@ $recentNews = $newsDisplay->getRecentNews();
                     <div class="p-6">
                         <h3 class="horror-font text-2xl blood-red mb-3"><?php echo htmlspecialchars($news['title']); ?></h3>
                         <p class="mb-4"><?php echo nl2br(htmlspecialchars(substr($news['content'], 0, 100))); ?>...</p>
-                        <a href="news.php?id=<?php echo $news['news_id']; ?>" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
+                        <a href="article.php?id=<?php echo $news['news_id']; ?>" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
                             Read More <i data-feather="arrow-right" class="inline"></i>
                         </a>
                     </div>
