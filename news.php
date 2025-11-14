@@ -4,6 +4,9 @@ spl_autoload_register(function ($class)
 //check of the user is logged in:
 $session = new UserSessionHandler();
 $isLoggedIn = $session->logged_in();
+
+$newsDisplay = new NewsDisplay();
+$newsList = $newsDisplay->getPublishedNews();
 ?>
 
 <!DOCTYPE html>
@@ -91,104 +94,57 @@ $isLoggedIn = $session->logged_in();
     <div class="container mx-auto px-6">
         <h1 class="horror-font text-4xl blood-red text-center mb-12">Grave News</h1>
         <div class="grid md:grid-cols-3 gap-8">
-            <!-- News 1 -->
-            <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
-                <img src="http://static.photos/horror/640x360/13" alt="News Image" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="horror-font text-2xl blood-red mb-3">All-Night Horror Marathon!</h3>
-                    <p class="mb-4">
-                        Join us this Halloween for 12 hours of uninterrupted horror classics. From dusk till dawn, we'll be screening rare 35mm prints of forbidden frights.
-                    </p>
-                    <a href="article.php" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                        Read More <i data-feather="arrow-right" class="inline"></i>
-                    </a>
-                </div>
-            </div>
+            <?php if (empty($newsList)): ?>
 
-            <!-- News 2 -->
-            <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
-                <img src="http://static.photos/horror/640x360/666" alt="News Image" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="horror-font text-2xl blood-red mb-3">Newly Restored: The Beyond</h3>
-                    <p class="mb-4">
-                        Lucio Fulci's gory masterpiece returns in a stunning 4K restoration for one week only. Experience the gates of hell like never before.
-                    </p>
-                    <a href="article.php" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                        Read More <i data-feather="arrow-right" class="inline"></i>
-                    </a>
+                <div class="col-span-full text-center text-gray-400">
+                    No news yet. Stay tuned…
                 </div>
-            </div>
 
-            <!-- News 3 -->
-            <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
-                <img src="http://static.photos/horror/640x360/99" alt="News Image" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="horror-font text-2xl blood-red mb-3">Midnight Madness Sale</h3>
-                    <p class="mb-4">
-                        For one night only, all vintage horror posters and memorabilia will be 50% off from midnight to 3am. Come if you dare...
-                    </p>
-                    <a href="article.php" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                        Read More <i data-feather="arrow-right" class="inline"></i>
-                    </a>
-                </div>
-            </div>
+            <?php else: ?>
+                <?php foreach ($newsList as $news): ?>
 
-            <!-- News 4 -->
-            <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
-                <img src="http://static.photos/horror/640x360/42" alt="News Image" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="horror-font text-2xl blood-red mb-3">Classic Horror Festival</h3>
-                    <p class="mb-4">
-                        Our annual Classic Horror Festival returns with screenings of rare 35mm prints from the golden age of horror cinema.
-                    </p>
-                    <a href="article.php" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                        Read More <i data-feather="arrow-right" class="inline"></i>
-                    </a>
-                </div>
-            </div>
+                    <?php
+                    $img = $news['banner_img'];
 
-            <!-- News 5 -->
-            <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
-                <img src="http://static.photos/horror/640x360/7" alt="News Image" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="horror-font text-2xl blood-red mb-3">New Membership Program</h3>
-                    <p class="mb-4">
-                        Join our new Scream Club membership program for exclusive benefits, early access to tickets, and special members-only events.
-                    </p>
-                    <a href="article.php" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                        Read More <i data-feather="arrow-right" class="inline"></i>
-                    </a>
-                </div>
-            </div>
+                    // Handle image path
+                    if (empty($img)) {
+                        $imgPath = "images/news/placeholder.jpg";
+                    } elseif (preg_match('/^https?:\/\//', $img)) {
+                        $imgPath = $img;
+                    } else {
+                        $imgPath = "images/news/" . ltrim($img, "/");
+                    }
 
-            <!-- News 6 -->
-            <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
-                <img src="http://static.photos/horror/640x360/24" alt="News Image" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="horror-font text-2xl blood-red mb-3">Behind the Screams Tour</h3>
-                    <p class="mb-4">
-                        Take a guided tour of our historic theater and learn about its haunted history and the legends that surround it.
-                    </p>
-                    <a href="article.php" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
-                        Read More <i data-feather="arrow-right" class="inline"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+                    $dateFormatted = date("F j, Y", strtotime($news['release_date']));
+                    ?>
 
-        <!-- Pagination -->
-        <div class="mt-12 flex justify-center">
-            <nav class="inline-flex rounded-md shadow">
-                <a href="#" class="px-3 py-2 purple-dark text-white rounded-l-md">
-                    <i data-feather="chevron-left"></i>
-                </a>
-                <a href="#" class="px-4 py-2 purple-dark text-white border-l border-gray-700">1</a>
-                <a href="#" class="px-4 py-2 purple-dark text-white border-l border-gray-700">2</a>
-                <a href="#" class="px-4 py-2 purple-dark text-white border-l border-gray-700">3</a>
-                <a href="#" class="px-3 py-2 purple-dark text-white border-l border-gray-700 rounded-r-md">
-                    <i data-feather="chevron-right"></i>
-                </a>
-            </nav>
+                    <div class="purple-dark rounded-lg shadow-xl overflow-hidden">
+                        <img src="<?= htmlspecialchars($imgPath) ?>"
+                             alt="<?= htmlspecialchars($news['title']) ?>"
+                             class="w-full h-48 object-cover">
+
+                        <div class="p-6">
+                            <h3 class="horror-font text-2xl blood-red mb-3">
+                                <?= htmlspecialchars($news['title']) ?>
+                            </h3>
+
+                            <p class="text-sm text-gray-400 mb-2">
+                                <?= $dateFormatted ?>
+                            </p>
+
+                            <p class="mb-4 line-clamp-3">
+                                <?= htmlspecialchars(substr($news['content'], 0, 150)) ?>...
+                            </p>
+
+                            <a href="article.php?id=<?= urlencode($news['news_id']) ?>"
+                               class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
+                                Read More <i data-feather="arrow-right" class="inline"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 </section>

@@ -143,23 +143,6 @@ $movies = $movieDisplay->getAllMovies();
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
-
-
-
-        <!-- Pagination -->
-        <div class="mt-12 flex justify-center">
-            <nav class="inline-flex rounded-md shadow">
-                <a href="#" class="px-3 py-2 purple-dark text-white rounded-l-md">
-                    <i data-feather="chevron-left"></i>
-                </a>
-                <a href="#" class="px-4 py-2 purple-dark text-white border-l border-gray-700">1</a>
-                <a href="#" class="px-4 py-2 purple-dark text-white border-l border-gray-700">2</a>
-                <a href="#" class="px-4 py-2 purple-dark text-white border-l border-gray-700">3</a>
-                <a href="#" class="px-3 py-2 purple-dark text-white border-l border-gray-700 rounded-r-md">
-                    <i data-feather="chevron-right"></i>
-                </a>
-            </nav>
-        </div>
     </div>
 </section>
 
