@@ -37,24 +37,13 @@ class MovieDisplay
         }
     }
 
-    public function getMovieById(int $id): ?array
+    public function getMovieById($id)
     {
-        try {
-            $stmt = $this->conn->prepare("
-                SELECT 
-                    movie_id, title, movie_desc, movie_length,
-                    debut_date, YEAR(debut_date) AS release_year,
-                    rating, director, genre, poster
-                FROM Movies
-                WHERE movie_id = ?
-                LIMIT 1
-            ");
-            $stmt->execute([$id]);
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $row ?: null;
-        } catch (PDOException $e) {
-            error_log('MovieDisplay::getMovieById error: '.$e->getMessage());
-            return null;
-        }
+        $sql = "SELECT * FROM Movies WHERE movie_id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
 }
