@@ -9,7 +9,8 @@ $company = new CompanyDisplay();
 $showtimeDisplay = new ShowtimeDisplay();
 $newsDisplay = new NewsDisplay();
 
-$welcomeText = $company->getPresentation("Welcome to Midnight Scream");
+$datakey = "Welcome to Midnight Scream";
+$welcomeText = $company->getCompanyInfo($datakey);
 $moviesToShow = $showtimeDisplay->getShowings();
 $recentNews = $newsDisplay->getRecentNews();
 ?>
@@ -171,7 +172,7 @@ $recentNews = $newsDisplay->getRecentNews();
                 </div>
                 <div class="lg:w-1/2">
                     <h2 class="horror-font text-5xl blood-red mb-6">
-                        Welcome to Midnight Scream
+                        <?php echo nl2br(htmlspecialchars($datakey)); ?>
                     </h2>
                     <div class="space-y-4 text-lg">
                         <p class="text-xl">

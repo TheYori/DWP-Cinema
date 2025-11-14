@@ -10,7 +10,7 @@ class CompanyDisplay {
 
     //Get Specific company data by using data_key
     //data_key is used instead of ID, so no errors occur when moving to Simply.com
-    public function getPresentation($data_key)
+    public function getCompanyInfo($data_key)
     {
         $query = "SELECT key_value FROM Company WHERE data_key = ?";
         $stmt = $this->conn->prepare($query);
