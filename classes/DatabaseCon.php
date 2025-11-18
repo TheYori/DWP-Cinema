@@ -1,10 +1,12 @@
 <?php
+require( "constants.php" );
+
 class DatabaseCon {
 
     //Local Host variables
-    private $user = "Rguldborg"; // Only for localhost - Will likely needs to me changed before uploading to Simply.com
-    private $pass = "123456"; // Only for localhost - Will likely needs to me changed before uploading to Simply.com
-    private $host = "mysql:host=localhost;dbname=CinemaDB";
+    //private $user = "Rguldborg"; // Only for localhost - Will likely needs to me changed before uploading to Simply.com
+    //private $pass = "123456"; // Only for localhost - Will likely needs to me changed before uploading to Simply.com
+    //private $host = "mysql:host=localhost;dbname=CinemaDB";
 
     // Simply variables
     //private $user = "matwijkiweducation_com";
@@ -14,14 +16,14 @@ class DatabaseCon {
     public $databaseCon;
     public function __construct()
     {
-        $user = $this ->user;
-        $pass = $this ->pass;
-        $host = $this ->host;
+        //$user = $this ->user;
+        //$pass = $this ->pass;
+        //$host = $this ->host;
 
         try
         {
             // Only for localhost - Will likely needs to me changed before uploading to Simply.com
-            $this -> databaseCon = new PDO($host, $user, $pass);
+            $this -> databaseCon = new PDO(DB_HOST, DB_USER, DB_PASS);
             // Only for Simply.com - The line below has been commented out- To use on Simply remove slashes and outcomment line above.
             //$this -> databaseCon = new PDO($host, $user, $pass);
             return $this -> databaseCon;
