@@ -122,32 +122,43 @@ CREATE TABLE Will_have(
 -- SQL VIEWS --
 CREATE VIEW view_showtimes_with_movie_info AS
 SELECT
-    s.Showtime_id,
+    s.Showtime_id AS showtime_id,
     s.show_date,
-    s.show_time,
+    DATE_FORMAT(s.show_time, '%H:%i') AS show_time,
     h.hall_name,
+
+    m.movie_id,
     m.title AS movie_title,
     m.movie_length,
     m.rating,
     m.genre,
-    m.poster
+    m.poster,
+    m.director,
+    m.movie_desc,
+    m.debut_date
+
 FROM Showtimes s
          JOIN Movies m ON s.movie_id = m.movie_id
-         JOIN Halls h ON s.hall_id = h.hall_id;
+         JOIN Halls h ON s.hall_id = h.hall_id
+WHERE s.show_date = CURDATE()
+ORDER BY s.show_time;
 
 CREATE VIEW view_booked_seats AS
 SELECT
-    t.ticket_id,
-    t.Showtime_id,
-    w.seat_id,
+    sh.Showtime_id,
+    sh.show_date,
+    sh.show_time,
+    h.hall_name,
+    m.title      AS movie_title,
     s.seat_name,
-    u.user_id,
-    u.first_name,
-    u.last_name
+    t.ticket_id,
+    t.user_id
 FROM Tickets t
-         JOIN Will_have w ON t.ticket_id = w.ticket_id
-         JOIN Seats s ON w.seat_id = s.seat_id
-         JOIN Users u ON t.user_id = u.user_id;
+JOIN Showtimes sh ON t.Showtime_id = sh.Showtime_id
+JOIN Movies m     ON sh.movie_id   = m.movie_id
+JOIN Will_have wh ON t.ticket_id   = wh.ticket_id
+JOIN Seats s      ON wh.seat_id    = s.seat_id
+JOIN Halls h      ON sh.hall_id    = h.hall_id;
 
 
 

@@ -6,13 +6,47 @@ $session = new UserSessionHandler();
 $isLoggedIn = $session->logged_in();
 
 $company = new CompanyDisplay();
-$showtimeDisplay = new ShowtimeDisplay();
+//$showtimeDisplay = new ShowtimeDisplay();
+$showtimeView = new ShowtimeView();
 $newsDisplay = new NewsDisplay();
 
 $datakey = "Welcome to Midnight Scream";
 $welcomeText = $company->getCompanyInfo($datakey);
-$moviesToShow = $showtimeDisplay->getShowings();
+//$moviesToShow = $showtimeDisplay->getShowings();
+$moviesToShow = $showtimeView->getAllShowings();
 $recentNews = $newsDisplay->getRecentNews();
+
+$rawShowings = $showtimeView->getAllShowings();
+
+// Group rows into movies → showtimes
+$moviesToShow = [];
+
+foreach ($rawShowings as $row) {
+    $movieId = $row['movie_id'];
+
+    if (!isset($moviesToShow[$movieId])) {
+        $moviesToShow[$movieId] = [
+                'movie' => [
+                        'title'        => $row['movie_title'],
+                        'poster'       => $row['poster'],
+                        'genre'        => $row['genre'],
+                        'director'     => $row['director'],
+                        'movie_length' => $row['movie_length'],
+                        'movie_desc'   => $row['movie_desc'],
+                        'debut_date'   => $row['debut_date']
+                ],
+                'showtimes' => []
+        ];
+    }
+
+    $moviesToShow[$movieId]['showtimes'][] = [
+            'Showtime_id' => $row['showtime_id'],
+            'hall'        => $row['hall_name'],
+            'time'        => $row['show_time']
+    ];
+}
+
+$moviesToShow = array_values($moviesToShow); // reset array keys
 ?>
 
 <!DOCTYPE html>
