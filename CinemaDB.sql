@@ -120,6 +120,58 @@ CREATE TABLE Will_have(
 
 
 
+
+
+
+
+
+-- TRIGGERS --
+-- prevent_duplicate_seat:
+-- This trigger should help prevent double booking in case PHP fails to catch it
+-- This trigger is very useful in case multiple users try to place similar bookings at the same time
+DELIMITER $$
+CREATE TRIGGER prevent_duplicate_seat
+    BEFORE INSERT ON Will_have
+    FOR EACH ROW
+BEGIN
+    DECLARE existingCount INT;
+
+    SELECT COUNT(*)
+    INTO existingCount
+    FROM Will_have wh
+             JOIN Tickets t ON wh.ticket_id = t.ticket_id
+    WHERE wh.seat_id = NEW.seat_id
+      AND t.Showtime_id = (
+        SELECT Showtime_id
+        FROM Tickets
+        WHERE ticket_id = NEW.ticket_id
+    );
+
+    IF existingCount > 0 THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'This seat is already booked for this showtime.';
+END IF;
+END$$
+DELIMITER ;
+
+-- auto_null_rating
+-- This trigger makes sure that if the movie hasn't yet been released it will have no rating
+-- This is very important as the admin could accidentally insert a false rating
+DELIMITER $$
+CREATE TRIGGER auto_null_rating
+BEFORE INSERT ON Movies
+FOR EACH ROW
+BEGIN
+IF NEW.debut_date > CURDATE() THEN
+    SET NEW.rating = NULL;
+    END IF;
+END$$
+DELIMITER ;
+
+
+
+
+
 -- ADMIN DATA --
 -- There need to be an existing Admin to create an admin.
 -- An Admin have been created so that:
