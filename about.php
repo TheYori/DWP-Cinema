@@ -3,6 +3,51 @@ spl_autoload_register(function ($class)
 {include"classes/".$class.".php";});
 //check of the user is logged in:
 $session = new UserSessionHandler();
+$isLoggedIn = $session->logged_in();
+
+$company = new CompanyDisplay();
+$hours = "Opening Hours:";
+$address = "Company Address:";
+$email = "Company Email:";
+$number = "Company Phone number:";
+$about = "Midnight Scream – Where Horror Never Sleeps";
+
+$openHours = $company->getCompanyInfo($hours);
+$companyAddress = $company->getCompanyInfo($address);
+$companyEmail = $company->getCompanyInfo($email);
+$companyPhone = $company->getCompanyInfo($number);
+$companyAbout = $company->getCompanyInfo($about);
+
+// Handle contact form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
+    $userName = trim($_POST['name'] ?? '');
+    $userEmail = trim($_POST['email'] ?? '');
+    $subject = trim($_POST['subject'] ?? 'General Inquiry');
+    $message = trim($_POST['message'] ?? '');
+
+    // Basic validation
+    if ($userName && filter_var($userEmail, FILTER_VALIDATE_EMAIL) && $message)
+    {
+        $to = "rickiguldborg40@gmail.com";
+        $emailSubject = "Message from a Midnight Scream user: " . htmlspecialchars($subject);
+        $body = "From: $userName <$userEmail>\n\nMessage:\n$message";
+        $headers = "From: Midnight Scream Website <no-reply@midnightscream.dk>\r\n";
+        $headers .= "Reply-To: $userEmail\r\n";
+        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+
+        // Attempt to send
+        if (mail($to, $emailSubject, $body, $headers))
+        {
+            // Redirect to avoid resubmission on page refresh
+            header("Location: about.php?sent=1");
+            exit;
+        } else
+        {
+            $error = "Oops! Something went wrong. The crypt might be blocking the message. Try again later.";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +102,11 @@ $session = new UserSessionHandler();
                 <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
                 <a href="news.php" class="text-white hover:text-purple-300">News</a>
                 <a href="#" class="text-white hover:text-purple-300">About Us</a>
-                <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                <?php if ($isLoggedIn): ?>
+                    <a href="profile.php" class="text-white hover:text-purple-300">Profile</a>
+                <?php else: ?>
+                    <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                <?php endif; ?>
             </div>
             <div class="md:hidden">
                 <button id="mobile-menu-button" class="text-white focus:outline-none">
@@ -68,7 +117,11 @@ $session = new UserSessionHandler();
                         <a href="index.php" class="text-white hover:text-purple-300">Home</a>
                         <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
                         <a href="about.php" class="text-white hover:text-purple-300">About Us</a>
-                        <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                        <?php if ($isLoggedIn): ?>
+                            <a href="profile.php" class="text-white hover:text-purple-300">Profile</a>
+                        <?php else: ?>
+                            <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -76,84 +129,69 @@ $session = new UserSessionHandler();
     </div>
 </nav>
 
-<!-- Company Information -->
+
+
+
 <section class="py-16">
     <div class="container mx-auto px-6 max-w-4xl">
+        <!-- Mission Statement -->
         <div class="purple-dark rounded-lg shadow-xl p-8 mb-12">
-            <h1 class="horror-font text-4xl blood-red mb-6 text-center">Our Dark Origins</h1>
+            <h2 class="horror-font text-4xl blood-red mb-6 text-center"><?php echo nl2br(htmlspecialchars($about)); ?></h2>
             <div class="mb-8">
-                <h2 class="horror-font text-2xl blood-red mb-4">Established in 1983</h2>
-                <p class="mb-4">
-                    Midnight Scream was founded by horror enthusiasts Vincent Graves and Eliza Moon on Halloween night, 1983.
-                    What began as a small arthouse cinema specializing in obscure horror films has grown into the premier destination
-                    for classic terror aficionados.
-                </p>
-                <p>
-                    Our founders believed that horror films deserved to be experienced as they were intended - on the big screen,
-                    in the dark, surrounded by fellow thrill-seekers. This philosophy continues to guide our operations today.
-                </p>
-            </div>
-            <div class="border-t border-gray-700 pt-6">
-                <h2 class="horror-font text-2xl blood-red mb-4">Legal Information</h2>
-                <p class="mb-4">
-                    Midnight Scream Spectacle is a registered company under Grave Entertainment Holdings LLC.
-                    All rights to displayed films remain with their respective copyright holders.
-                </p>
-                <p>
-                    Midnight Scream is licensed under the International Horror Exhibition Association (IHEA) and complies
-                    with all local entertainment and safety regulations.
+                <p class="mb-4 text-l">
+                    <?php echo nl2br(htmlspecialchars($companyAbout)); ?>
                 </p>
             </div>
         </div>
 
-        <!-- Mission Statement -->
+        <!-- Company Information -->
         <div class="purple-dark rounded-lg shadow-xl p-8 mb-12">
-            <h2 class="horror-font text-4xl blood-red mb-6 text-center">Our Screaming Mission</h2>
+            <h1 class="horror-font text-4xl blood-red mb-6 text-center">General information</h1>
             <div class="mb-8">
-                <h3 class="horror-font text-2xl blood-red mb-4">Why We Exist</h3>
-                <p class="mb-4">
-                    We preserve and celebrate the art of horror cinema. In an era of digital streaming, we maintain the
-                    tradition of theatrical horror experiences - complete with 35mm film projectors when possible.
+                <h2 class="horror-font text-2xl blood-red mb-4">Company Info</h2>
+                <p class="mb-4 text-l">
+                    <?php echo "<b>" . nl2br(htmlspecialchars($hours)) . "</b>" . "<br>" . nl2br(htmlspecialchars($openHours)); ?>
                 </p>
-                <p>
-                    Our goal is to keep the history of horror alive while supporting new filmmakers pushing the genre forward.
+                <p class="mb-4 text-l">
+                    <?php echo "<b>" . nl2br(htmlspecialchars($address)) . "</b>" . "<br>" . nl2br(htmlspecialchars($companyAddress)); ?>
                 </p>
             </div>
-            <div class="mb-8">
-                <h3 class="horror-font text-2xl blood-red mb-4">Future Plans</h3>
+            <div class="border-t border-gray-700 pt-6">
+                <h2 class="horror-font text-2xl blood-red mb-4">Contact Info</h2>
                 <p class="mb-4">
-                    By 2025, we plan to establish the Midnight Scream Film Foundation to fund restorations of lost horror classics
-                    and provide grants to emerging horror filmmakers.
+                <p class="mb-4 text-l">
+                    <?php echo "<b>" . nl2br(htmlspecialchars($email)) . "</b>" . " " . nl2br(htmlspecialchars($companyEmail)); ?>
                 </p>
-                <p>
-                    We're also expanding our locations to bring curated horror experiences to more cities while maintaining
-                    our underground aesthetic.
-                </p>
-            </div>
-            <div>
-                <h3 class="horror-font text-2xl blood-red mb-4">Supporting the Community</h3>
-                <p>
-                    A portion of all proceeds supports the Nightmare Foundation, helping provide therapy for children suffering
-                    from night terrors and funding research into sleep disorders.
+                <p class="mb-4 text-l">
+                    <?php echo "<b>" . nl2br(htmlspecialchars($number)) . "</b>" . " " . nl2br(htmlspecialchars($companyPhone)); ?>
                 </p>
             </div>
         </div>
+
+
 
         <!-- Contact Form -->
         <div class="purple-dark rounded-lg shadow-xl p-8">
             <h2 class="horror-font text-4xl blood-red mb-6 text-center">Contact the Crypt Keepers</h2>
-            <form class="space-y-6">
+            <?php if (isset($_GET['sent'])): ?>
+                <div class="bg-green-800 text-white p-4 rounded mb-4">
+                    Your message has been sent successfully! The crypt keepers will reply soon... 🦇
+                </div>
+            <?php elseif (!empty($error)): ?>
+                <div class="bg-red-800 text-white p-4 rounded mb-4"><?= htmlspecialchars($error) ?></div>
+            <?php endif; ?>
+            <form method="POST" class="space-y-6">
                 <div>
                     <label for="name" class="block mb-2">Your Name</label>
-                    <input type="text" id="name" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <input  type="text" id="name" name="name" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
                     <label for="email" class="block mb-2">Email Address</label>
-                    <input type="email" id="email" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <input type="email" id="email" name="email" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                 </div>
                 <div>
                     <label for="subject" class="block mb-2">Subject</label>
-                    <select id="subject" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <select id="subject" name="subject" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500">
                         <option>General Inquiry</option>
                         <option>Film Submission</option>
                         <option>Private Event</option>
@@ -163,7 +201,7 @@ $session = new UserSessionHandler();
                 </div>
                 <div>
                     <label for="message" class="block mb-2">Your Message</label>
-                    <textarea id="message" rows="5" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
+                    <textarea id="message" name="message" rows="5" class="w-full px-4 py-3 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-purple-500"></textarea>
                 </div>
                 <button type="submit" class="w-full moss-green hover:bg-green-900 text-white font-bold py-3 px-6 rounded transition duration-300">
                     Send Message <i data-feather="send" class="inline ml-2"></i>

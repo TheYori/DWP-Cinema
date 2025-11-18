@@ -27,4 +27,29 @@ class NewsDisplay
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    // Get all published news (release_date <= today)
+    public function getPublishedNews()
+    {
+        $sql = "SELECT * 
+                FROM News 
+                WHERE release_date <= CURDATE()
+                ORDER BY release_date DESC";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Get one article by id (for article.php)
+    public function getNewsById($id)
+    {
+        $sql = "SELECT * FROM News WHERE news_id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

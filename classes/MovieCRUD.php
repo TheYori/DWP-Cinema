@@ -34,7 +34,9 @@ class MovieCRUD
             return false;
         }
 
-        $query = $this->conn->prepare("INSERT INTO Movies (title, movie_length, debut_date, rating, director, genre, movie_desc, poster) VALUES (:title, :movie_length, :debut_date, :rating, :director, :genre, :movie_desc, :poster)");
+        $query = $this->conn->prepare("
+        INSERT INTO Movies (title, movie_length, debut_date, rating, director, genre, movie_desc, poster) 
+        VALUES (:title, :movie_length, :debut_date, :rating, :director, :genre, :movie_desc, :poster)");
 
         $san_title = htmlspecialchars($title);
         $san_movie_length = htmlspecialchars($movie_length);
@@ -67,12 +69,17 @@ class MovieCRUD
                 return false;
             }
 
-            $query = $this->conn->prepare("UPDATE Movies SET title = :title, movie_length = :movie_length, debut_date = :debut_date, rating = :rating, director = :director, genre = :genre, movie_desc = :movie_desc, poster = :poster WHERE movie_id = :id");
+            $query = $this->conn->prepare("
+            UPDATE Movies 
+            SET title = :title, movie_length = :movie_length, debut_date = :debut_date, rating = :rating, director = :director, genre = :genre, movie_desc = :movie_desc, poster = :poster 
+            WHERE movie_id = :id");
             $query->bindParam(":poster", $poster);
         }
         else
         {
-            $query = $this->conn->prepare("UPDATE Movies SET title = :title, movie_length = :movie_length, debut_date = :debut_date, rating = :rating, director = :director, genre = :genre, movie_desc = :movie_desc WHERE movie_id = :id");
+            $query = $this->conn->prepare("
+            UPDATE Movies SET title = :title, movie_length = :movie_length, debut_date = :debut_date, rating = :rating, director = :director, genre = :genre, movie_desc = :movie_desc 
+            WHERE movie_id = :id");
         }
         $san_title = htmlspecialchars($title);
         $san_movie_length = htmlspecialchars($movie_length);

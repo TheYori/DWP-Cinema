@@ -1,7 +1,7 @@
 <?php
 spl_autoload_register(function ($class)
 {include"../classes/".$class.".php";});
-//check of the user is logged in:
+//check of the admin is logged in:
 $session = new AdminSessionHandler();
 $session->confirm_logged_in()
 ?>

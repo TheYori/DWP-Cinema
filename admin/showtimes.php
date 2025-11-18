@@ -1,7 +1,7 @@
 <?php
 spl_autoload_register(function ($class)
 {include"../classes/".$class.".php";});
-//check of the user is logged in:
+//check of the admin is logged in:
 $session = new AdminSessionHandler();
 $session->confirm_logged_in();
 
@@ -20,7 +20,6 @@ $showtimeCRUD = new ShowtimeCRUD();
 $movies = $showtimeCRUD->getAllMovies();
 $halls = $showtimeCRUD->getAllHalls();
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $movie_id = $_POST['movie_id'];
     $hall_id = $_POST['hall_id'];

@@ -3,12 +3,14 @@ spl_autoload_register(function ($class)
 {include"classes/".$class.".php";});
 //check of the user is logged in:
 $session = new UserSessionHandler();
+$isLoggedIn = $session->logged_in();
 
 $company = new CompanyDisplay();
 $showtimeDisplay = new ShowtimeDisplay();
 $newsDisplay = new NewsDisplay();
 
-$welcomeText = $company->getPresentation("Welcome to Midnight Scream");
+$datakey = "Welcome to Midnight Scream";
+$welcomeText = $company->getCompanyInfo($datakey);
 $moviesToShow = $showtimeDisplay->getShowings();
 $recentNews = $newsDisplay->getRecentNews();
 ?>
@@ -98,7 +100,11 @@ $recentNews = $newsDisplay->getRecentNews();
                 <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
                 <a href="news.php" class="text-white hover:text-purple-300">News</a>
                 <a href="about.php" class="text-white hover:text-purple-300">About Us</a>
-                <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                <?php if ($isLoggedIn): ?>
+                    <a href="profile.php" class="text-white hover:text-purple-300">Profile</a>
+                <?php else: ?>
+                    <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                <?php endif; ?>
             </div>
             <div class="md:hidden">
                 <button id="mobile-menu-button" class="text-white focus:outline-none">
@@ -109,7 +115,11 @@ $recentNews = $newsDisplay->getRecentNews();
                         <a href="index.php" class="text-white hover:text-purple-300">Home</a>
                         <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
                         <a href="about.php" class="text-white hover:text-purple-300">About Us</a>
-                        <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                        <?php if ($isLoggedIn): ?>
+                            <a href="profile.php" class="text-white hover:text-purple-300">Profile</a>
+                        <?php else: ?>
+                            <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -162,7 +172,7 @@ $recentNews = $newsDisplay->getRecentNews();
                 </div>
                 <div class="lg:w-1/2">
                     <h2 class="horror-font text-5xl blood-red mb-6">
-                        Welcome to Midnight Scream
+                        <?php echo htmlspecialchars($datakey); ?>
                     </h2>
                     <div class="space-y-4 text-lg">
                         <p class="text-xl">
@@ -236,8 +246,8 @@ $recentNews = $newsDisplay->getRecentNews();
                     <img src="images/news/<?php echo htmlspecialchars($news['banner_img']); ?>" alt="News Image" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="horror-font text-2xl blood-red mb-3"><?php echo htmlspecialchars($news['title']); ?></h3>
-                        <p class="mb-4"><?php echo nl2br(htmlspecialchars(substr($news['content'], 0, 100))); ?>...</p>
-                        <a href="news.php?id=<?php echo $news['news_id']; ?>" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
+                        <p class="mb-4"><?php echo htmlspecialchars(substr($news['content'], 0, 100)); ?>...</p>
+                        <a href="article.php?id=<?php echo $news['news_id']; ?>" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
                             Read More <i data-feather="arrow-right" class="inline"></i>
                         </a>
                     </div>

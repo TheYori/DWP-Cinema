@@ -29,6 +29,7 @@ class RegisterNewUser
             $checkPostal->execute();
 
             // If postal code doesn’t exist, insert it with the provided city
+            // This check should be redundant, but nice to have in case it develops into a global chain I guess
             if ($checkPostal->rowCount() === 0) {
                 $insertPostal = $db->databaseCon->prepare("INSERT INTO PostalCodes (postal_code, city) VALUES (:postal_code, :city)");
                 $insertPostal->bindParam(':postal_code', $postalCode, PDO::PARAM_INT);
@@ -36,7 +37,7 @@ class RegisterNewUser
                 $insertPostal->execute();
             }
 
-            // Hash password securely
+            // Hash password with Bcrypt
             $options = ['cost' => 11];
             $hashed_password = password_hash($pass, PASSWORD_BCRYPT, $options);
 
@@ -45,7 +46,7 @@ class RegisterNewUser
                 INSERT INTO Users 
                 (first_name, last_name, phone_number, birth_date, email, street, postal_code, user_password)
                 VALUES (:fname, :lname, :phone, :birth_date, :email, :street, :postal_code, :password)
-            ");
+                ");
             $san_fname = htmlspecialchars($fname);
             $san_lname = htmlspecialchars($lname);
             $san_phone = htmlspecialchars($phone);

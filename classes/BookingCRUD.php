@@ -11,9 +11,8 @@ class BookingCRUD
         $this->db = $database->databaseCon;
     }
 
-    /**
-     * Get all bookings with user, movie, showtime, hall, and seat info.
-     */
+
+    // Get all bookings with user, movie, showtime, hall, and seat info.
     public function getAllBookings()
     {
         $query = $this->db->prepare("

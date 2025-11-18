@@ -20,7 +20,7 @@ class UserSessionHandler
         }
     }
 
-    // ✅ Add this missing method
+    // Get user id
     public function get_user_id()
     {
         return $this->logged_in() ? $_SESSION['user_id'] : null;

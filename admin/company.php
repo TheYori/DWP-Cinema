@@ -1,7 +1,7 @@
 <?php
 spl_autoload_register(function ($class)
 {include"../classes/".$class.".php";});
-//check of the user is logged in:
+//check of the admin is logged in:
 $session = new AdminSessionHandler();
 $session->confirm_logged_in();
 
@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $created = $companyCRUD->create($data_key, $key_value);
 
         if ($created) {
-            // Optional: reload page to refresh data and clear form
             header("Location: company.php?success=1");
             exit;
         } else {
@@ -31,17 +30,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch all company info (refresh list after adding)
+// Fetch all company info
 $companyData = $companyCRUD->getAll();
 
-// Optional: show success message after redirect
+// Success message after redirect
 if (isset($_GET['success'])) {
     $message = "<p class='text-green-400 font-semibold mt-4'>Company information successfully added!</p>";
 }
 
-// Handle delete action
+// Delete action
 if (isset($_GET['delete'])) {
-    $id = (int) $_GET['delete']; // make sure it’s an integer for safety
+    $id = (int) $_GET['delete'];
     if ($companyCRUD->delete($id)) {
         header("Location: company.php?deleted=1");
         exit;

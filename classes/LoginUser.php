@@ -22,7 +22,7 @@ class LoginUser
                 else
                 {
                     // username/password combo was not found in the database
-                    $this->message = "Username/password combination incorrect.<br />
+                    $this->message = "Username and/or password was incorrect.<br />
 					Please make sure your caps lock key is off and try again.";
                 }
             }
