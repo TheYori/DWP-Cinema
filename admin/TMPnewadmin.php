@@ -1,4 +1,6 @@
 <?php
+// THIS FILE SHOULD BE DELETED AS POSSIBLE
+
 spl_autoload_register(function ($class)
 {include "../classes/".$class.".php";});
 $session = new AdminSessionHandler();
