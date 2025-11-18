@@ -97,6 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="showtimes.php" class="text-white hover:text-purple-300">Showtimes</a>
             <a href="news.php" class="text-purple-300 font-bold">News</a>
             <a href="bookings.php" class="text-white hover:text-purple-300">Bookings</a>
+            <a href="seats.php" class="text-white hover:text-purple-300">Booked Seats</a>
             <a href="admin.php" class="text-white hover:text-purple-300">Admins</a>
         </div>
     </div>
