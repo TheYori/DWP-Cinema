@@ -1,8 +1,6 @@
 <?php
-spl_autoload_register(function ($class) {
-    include "../classes/" . $class . ".php";
-});
-
+spl_autoload_register(function ($class)
+{include"../classes/".$class.".php";});
 //check of the admin is logged in:
 $session = new AdminSessionHandler();
 $session->confirm_logged_in();
@@ -11,15 +9,17 @@ $session->confirm_logged_in();
 $bookingsDisplay = new BookingCRUD();
 $bookings = $bookingsDisplay->getAllBookings();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midnight Scream Spectacle - Admin Bookings</title>
+    <title>Midnight Scream Spectacle - Admin Management</title>
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Creepster&family=EB+Garamond:wght@400;700&display=swap');
         body {
@@ -27,38 +27,62 @@ $bookings = $bookingsDisplay->getAllBookings();
             background-color: #0f0a1a;
             color: #e0d6eb;
         }
-        .horror-font { font-family: 'Creepster', cursive; }
-        .purple-dark { background-color: #1a1029; }
-        .blood-red { color: #ff3a3a; }
-        .admin-nav { background-color: #0a0515; }
+        .horror-font {
+            font-family: 'Creepster', cursive;
+        }
+        .purple-dark {
+            background-color: #1a1029;
+        }
+        .purple-light {
+            background-color: #2a1a4a;
+        }
+        .moss-green {
+            background-color: #1a2910;
+        }
+        .blood-red {
+            color: #ff3a3a;
+        }
+        .glow {
+            text-shadow: 0 0 5px #9b59b6, 0 0 10px #9b59b6;
+        }
+        .admin-nav {
+            background-color: #0a0515;
+        }
     </style>
 </head>
 <body class="min-h-screen">
-
 <!-- Navigation -->
 <nav class="purple-dark sticky top-0 z-50 shadow-lg">
-    <div class="container mx-auto px-6 py-3 flex items-center justify-between">
-        <a href="../index.php" class="horror-font text-3xl blood-red glow">Midnight Scream</a>
-        <h1>Welcome, <strong><?php echo $_SESSION['username']; ?></strong></h1>
-        <div class="flex space-x-4">
-            <a href="../index.php" class="hidden md:block text-white hover:text-purple-300">Back to Main Site</a>
-            <a href="login.php?logout=1" class="bg-green-900 hover:bg-green-800 text-white font-bold py-2 px-4 rounded transition">
-                Log Out <i data-feather="log-out" class="inline ml-1"></i>
-            </a>
+    <div class="container mx-auto px-6 py-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-8">
+                <a href="../index.php" class="flex items-center">
+                    <span class="horror-font text-3xl blood-red glow">Midnight Scream</span>
+                </a>
+            </div>
+            <h1>Welcome to the backend: <strong><?php echo $_SESSION['username']; ?></strong></h1>
+            <div class="flex items-center space-x-4">
+                <a href="../index.php" class="hidden md:block text-white hover:text-purple-300">Back to Main Site</a>
+                <a href="login.php?logout=1" class="moss-green hover:bg-green-900 text-white font-bold py-2 px-4 rounded transition duration-300" >
+                    Log Out <i data-feather="log-out" class="inline ml-1"></i>
+                </a>
+            </div>
         </div>
     </div>
 </nav>
 
 <!-- Admin Navigation -->
 <div class="admin-nav py-4 shadow-inner">
-    <div class="container mx-auto px-6 flex flex-wrap gap-4">
-        <a href="company.php" class="text-white hover:text-purple-300">Company Info</a>
-        <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
-        <a href="showtimes.php" class="text-white hover:text-purple-300">Showtimes</a>
-        <a href="news.php" class="text-white hover:text-purple-300">News</a>
-        <a href="bookings.php" class="text-purple-300 font-bold">Bookings</a>
-        <a href="seats.php" class="text-white hover:text-purple-300">Booked Seats</a>
-        <a href="admin.php" class="text-white hover:text-purple-300">Admins</a>
+    <div class="container mx-auto px-6">
+        <div class="flex flex-wrap gap-4">
+            <a href="company.php" class="text-white hover:text-purple-300">Company Info</a>
+            <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
+            <a href="showtimes.php" class="text-white hover:text-purple-300">Showtimes</a>
+            <a href="news.php" class="text-white hover:text-purple-300">News</a>
+            <a href="bookings.php" class="text-purple-300 font-bold">Bookings</a>
+            <a href="seats.php" class="text-white hover:text-purple-300">Booked Seats</a>
+            <a href="admin.php" class="text-white hover:text-purple-300">Admins</a>
+        </div>
     </div>
 </div>
 
