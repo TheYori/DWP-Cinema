@@ -119,7 +119,35 @@ CREATE TABLE Will_have(
 
 
 
+-- SQL VIEWS --
+CREATE VIEW view_showtimes_with_movie_info AS
+SELECT
+    s.Showtime_id,
+    s.show_date,
+    s.show_time,
+    h.hall_name,
+    m.title AS movie_title,
+    m.movie_length,
+    m.rating,
+    m.genre,
+    m.poster
+FROM Showtimes s
+         JOIN Movies m ON s.movie_id = m.movie_id
+         JOIN Halls h ON s.hall_id = h.hall_id;
 
+CREATE VIEW view_booked_seats AS
+SELECT
+    t.ticket_id,
+    t.Showtime_id,
+    w.seat_id,
+    s.seat_name,
+    u.user_id,
+    u.first_name,
+    u.last_name
+FROM Tickets t
+         JOIN Will_have w ON t.ticket_id = w.ticket_id
+         JOIN Seats s ON w.seat_id = s.seat_id
+         JOIN Users u ON t.user_id = u.user_id;
 
 
 
