@@ -35,7 +35,10 @@ class NewsCRUD
             return false; // image upload failed
         }
 
-        $query = $this->conn->prepare("INSERT INTO News (title, content, release_date, banner_img) VALUES (:title, :content, :release_date, :banner_img)");
+        $query = $this->conn->prepare("
+        INSERT INTO News (title, content, release_date, banner_img) 
+        VALUES (:title, :content, :release_date, :banner_img)");
+
         $san_title = htmlspecialchars($title);
         $san_content = htmlspecialchars($content);
         $san_release_date = htmlspecialchars($release_date);
@@ -57,12 +60,16 @@ class NewsCRUD
                 return false;
             }
 
-            $query = $this->conn->prepare("UPDATE News SET title = :title, content = :content, release_date = :release_date, banner_img = :banner_img WHERE news_id = :id");
+            $query = $this->conn->prepare("
+            UPDATE News SET title = :title, content = :content, release_date = :release_date, banner_img = :banner_img 
+            WHERE news_id = :id");
             $query->bindParam(':banner_img', $banner_img);
         }
         else
         {
-            $query = $this->conn->prepare("UPDATE News SET title = :title, content = :content, release_date = :release_date WHERE news_id = :id");
+            $query = $this->conn->prepare("
+            UPDATE News SET title = :title, content = :content, release_date = :release_date 
+            WHERE news_id = :id");
         }
         $san_title = htmlspecialchars($title);
         $san_content = htmlspecialchars($content);

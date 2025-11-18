@@ -9,7 +9,7 @@ class MovieDisplay
         $this->conn = $db->databaseCon;
     }
 
-    // All movies (you can add WHEREs later if you need filtering)
+    // All movies
     public function getAllMovies(): array
     {
         try {
@@ -26,8 +26,7 @@ class MovieDisplay
                     m.genre,
                     m.poster
                 FROM Movies m
-                ORDER BY m.debut_date DESC, m.title ASC
-            ";
+                ORDER BY m.debut_date DESC, m.title ASC";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];

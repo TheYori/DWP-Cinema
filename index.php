@@ -172,7 +172,7 @@ $recentNews = $newsDisplay->getRecentNews();
                 </div>
                 <div class="lg:w-1/2">
                     <h2 class="horror-font text-5xl blood-red mb-6">
-                        <?php echo nl2br(htmlspecialchars($datakey)); ?>
+                        <?php echo htmlspecialchars($datakey); ?>
                     </h2>
                     <div class="space-y-4 text-lg">
                         <p class="text-xl">
@@ -246,7 +246,7 @@ $recentNews = $newsDisplay->getRecentNews();
                     <img src="images/news/<?php echo htmlspecialchars($news['banner_img']); ?>" alt="News Image" class="w-full h-48 object-cover">
                     <div class="p-6">
                         <h3 class="horror-font text-2xl blood-red mb-3"><?php echo htmlspecialchars($news['title']); ?></h3>
-                        <p class="mb-4"><?php echo nl2br(htmlspecialchars(substr($news['content'], 0, 100))); ?>...</p>
+                        <p class="mb-4"><?php echo htmlspecialchars(substr($news['content'], 0, 100)); ?>...</p>
                         <a href="article.php?id=<?php echo $news['news_id']; ?>" class="inline-block moss-green hover:bg-green-900 text-white py-2 px-4 rounded transition duration-300">
                             Read More <i data-feather="arrow-right" class="inline"></i>
                         </a>
