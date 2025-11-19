@@ -9,7 +9,8 @@ $session->confirm_logged_in();
 $companyCRUD = new CompanyCRUD();
 
 // Get company info by ID
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+if (!isset($_GET['id']) || !is_numeric($_GET['id']))
+{
     header("Location: company.php");
     exit;
 }
@@ -17,7 +18,8 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
 $id = (int) $_GET['id'];
 $company = $companyCRUD->getById($id);
 
-if (!$company) {
+if (!$company)
+{
     // If no record found, redirect back
     header("Location: company.php?notfound=1");
     exit;
@@ -26,19 +28,26 @@ if (!$company) {
 $message = "";
 
 // Submission form
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data_key = trim($_POST['info-type']);
-    $key_value = trim($_POST['info-data']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
+    $data_key  = filter_input(INPUT_POST, 'info-type', FILTER_SANITIZE_SPECIAL_CHARS);
+    $key_value = filter_input(INPUT_POST, 'info-data', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    if (!empty($data_key) && !empty($key_value)) {
+    if (!empty($data_key) && !empty($key_value))
+    {
         $updated = $companyCRUD->update($id, $data_key, $key_value);
-        if ($updated) {
+        if ($updated)
+        {
             header("Location: company.php?updated=1");
             exit;
-        } else {
+        }
+        else
+        {
             $message = "<p class='text-red-400 font-semibold mt-4'>Failed to change the data entry</p>";
         }
-    } else {
+    }
+    else
+    {
         $message = "<p class='text-yellow-400 font-semibold mt-4'>Both fields are required, ya idjit...</p>";
     }
 }

@@ -8,13 +8,14 @@ $session->confirm_logged_in();
 $movieCRUD = new MovieCRUD();
 $message = "";
 
-// Check for movie ID
-if (!isset($_GET['id']) || empty($_GET['id'])) {
+// Validate ID
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+if ($id === null || $id === false) {
     header("Location: movies.php");
     exit;
 }
 
-$id = (int)$_GET['id'];
 $movie = $movieCRUD->getMovieById($id);
 
 if (!$movie) {

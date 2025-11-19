@@ -38,19 +38,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Handle delete request
-if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    $id = (int)$_GET['delete'];
+$deleteId = filter_input(INPUT_GET, 'delete', FILTER_VALIDATE_INT);
 
-    if ($showtimeCRUD->delete($id)) {
+if ($deleteId !== false && $deleteId !== null) {
+    if ($showtimeCRUD->delete($deleteId)) {
         $_SESSION['message'] = "<p class='text-green-400 font-semibold'>Showtime deleted successfully!</p>";
     } else {
         $_SESSION['message'] = "<p class='text-red-400 font-semibold'>Error deleting showtime. Please try again.</p>";
     }
 
-    // Redirect to prevent repeated deletions on refresh
     header("Location: showtimes.php");
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>

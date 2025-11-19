@@ -3,8 +3,10 @@ spl_autoload_register(function ($class)
 {include "classes/".$class.".php";});
 $session = new UserSessionHandler();
 $isLoggedIn = $session->logged_in();
-//look for logout keyword and log the user out if == 1
-if (isset($_GET['logout']) && $_GET['logout'] == 1)
+
+// Validate logout GET param
+$logoutVal = filter_input(INPUT_GET, 'logout', FILTER_VALIDATE_INT);
+if ($logoutVal === 1)
 {
     $logout = new Logout();
     $msg = "You are now logged out.";
@@ -13,11 +15,23 @@ elseif ($session->logged_in())
 {
     $redirect = new Redirector("profile.php");
 }
-// Start form processing
+
+// Handle login POST
 if (isset($_POST['submit']))
-{ // Form has been submitted.
-    $login = new LoginUser($_POST['email'],$_POST['user_password']);
-    $msg = $login->message;
+{
+
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $password = filter_input(INPUT_POST, 'user_password', FILTER_UNSAFE_RAW);
+
+    if (!$email)
+    {
+        $msg = "Invalid email format.";
+    }
+    else
+    {
+        $login = new LoginUser($email, $password);
+        $msg = $login->message;
+    }
 }
 ?>
 

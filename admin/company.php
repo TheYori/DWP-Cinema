@@ -12,20 +12,32 @@ $companyData = $companyCRUD->getAll();
 // Handle form submission
 $message = "";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data_key = trim($_POST['info-type']);
-    $key_value = trim($_POST['info-data']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
+    $data_key  = filter_input(INPUT_POST, 'info-type', FILTER_SANITIZE_SPECIAL_CHARS);
+    $key_value = filter_input(INPUT_POST, 'info-data', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-    if (!empty($data_key) && !empty($key_value)) {
+    if (!$data_key || !$key_value)
+    {
+        $message = "<p class='text-yellow-400 font-semibold mt-4'>Invalid input provided.</p>";
+    }
+
+    if (!empty($data_key) && !empty($key_value))
+    {
         $created = $companyCRUD->create($data_key, $key_value);
 
-        if ($created) {
+        if ($created)
+        {
             header("Location: company.php?success=1");
             exit;
-        } else {
+        }
+        else
+        {
             $message = "<p class='text-red-400 font-semibold mt-4'>Failed to save information. Please try again.</p>";
         }
-    } else {
+    }
+    else
+    {
         $message = "<p class='text-yellow-400 font-semibold mt-4'>Both fields are required.</p>";
     }
 }
@@ -34,17 +46,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $companyData = $companyCRUD->getAll();
 
 // Success message after redirect
-if (isset($_GET['success'])) {
+if (isset($_GET['success']))
+{
     $message = "<p class='text-green-400 font-semibold mt-4'>Company information successfully added!</p>";
 }
 
 // Delete action
-if (isset($_GET['delete'])) {
+if (isset($_GET['delete']))
+{
     $id = (int) $_GET['delete'];
-    if ($companyCRUD->delete($id)) {
+    if ($companyCRUD->delete($id))
+    {
         header("Location: company.php?deleted=1");
         exit;
-    } else {
+    }
+    else
+    {
         header("Location: company.php?error=1");
         exit;
     }

@@ -8,11 +8,19 @@ $isLoggedIn = $session->logged_in();
 // Load selected article
 $newsDisplay = new NewsDisplay();
 
-if (!isset($_GET['id'])) {
-    die("No article selected.");
+// Validate GET id
+$articleId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+if (!$articleId) {
+    die("Invalid article ID.");
 }
 
-$article = $newsDisplay->getNewsById($_GET['id']);
+$article = $newsDisplay->getNewsById($articleId);
+
+if (!$article) {
+    die("Article not found.");
+}
+
 
 if (!$article) {
     die("Article not found.");

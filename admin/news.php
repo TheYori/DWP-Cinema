@@ -12,12 +12,15 @@ $newsCRUD = new NewsCRUD();
 $message = "";
 
 // Handle deletion
-if (isset($_GET['delete'])) {
-    $id = (int)$_GET['delete'];
-    if ($newsCRUD->delete($id)) {
+$deleteId = filter_input(INPUT_GET, 'delete', FILTER_VALIDATE_INT);
+
+if ($deleteId !== false && $deleteId !== null) {
+    if ($newsCRUD->delete($deleteId)) {
         header("Location: news.php?deleted=1");
         exit;
-    } else {
+    }
+    else
+    {
         $message = "<p class='text-red-400 font-semibold mt-4'>Failed to delete news post.</p>";
     }
 }

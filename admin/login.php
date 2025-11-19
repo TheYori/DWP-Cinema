@@ -3,15 +3,18 @@ spl_autoload_register(function ($class)
 {include "../classes/".$class.".php";});
 $session = new AdminSessionHandler();
 //look for logout keyword and log the user out if == 1
-if (isset($_GET['logout']) && $_GET['logout'] == 1)
+$logout = filter_input(INPUT_GET, 'logout', FILTER_VALIDATE_INT);
+
+if ($logout === 1)
 {
-    $logout = new Logout();
+    $logoutAction = new Logout();
     $msg = "You are now logged out.";
 }
 elseif ($session->logged_in())
 {
     $redirect = new Redirector("company.php");
 }
+
 // START FORM PROCESSING
 if (isset($_POST['submit']))
 { // Form has been submitted.

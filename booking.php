@@ -8,15 +8,24 @@ $isLoggedIn = $session->logged_in();
 
 $booking= new BookingDisplay();
 
-//Get showtime ID via URL
-if (!isset($_GET['showtime_id']))
-{
-    //die("No showtime selected. Now that's truly scary :O");
+if (!isset($_GET['showtime_id'])) {
+    die("Missing showtime ID.");
 }
 
-$showtime_id = $_GET['showtime_id'];
+$showtime_id = filter_input(INPUT_GET, 'showtime_id', FILTER_VALIDATE_INT);
+
+if (!$showtime_id) {
+    die("Invalid showtime ID.");
+}
+
 $showtime = $booking->getShowtime($showtime_id);
+
+if (!$showtime) {
+    die("Showtime not found.");
+}
+
 $seats = $booking->getSeats($showtime['hall_id'], $showtime_id);
+
 ?>
 
 <!DOCTYPE html>

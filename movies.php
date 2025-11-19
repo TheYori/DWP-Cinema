@@ -96,21 +96,27 @@ $movies = $movieDisplay->getAllMovies();
                 </div>
             <?php else: ?>
                 <?php foreach ($movies as $mv):
-                    $poster = $mv['poster'];
+                    $poster = $mv['poster'] ?? "";
 
-                    // If empty → placeholder
+                    // Normalize
+                    $poster = trim($poster);
+
+                    // SAFELY build path
                     if (empty($poster)) {
                         $posterPath = "images/movies/placeholder.jpg";
-                    }
-                    // If it already starts with "images" or "/images" → use as is
-                    elseif (str_starts_with($poster, "images/") || str_starts_with($poster, "/images/")) {
-                        $posterPath = $poster;
-                    }
-                    // Otherwise assume it's just a filename
-                    else {
-                        $posterPath = "images/movies/" . $poster;
-                    }
 
+                    } elseif (filter_var($poster, FILTER_VALIDATE_URL)) {
+                        // Allow full external URLs (e.g., CDN)
+                        $posterPath = $poster;
+
+                    } elseif (str_starts_with($poster, "images/") || str_starts_with($poster, "/images/")) {
+                        // Image path includes directory but may contain traversal
+                        $posterPath = "images/movies/" . basename($poster);
+
+                    } else {
+                        // Just a filename — sanitize with basename()
+                        $posterPath = "images/movies/" . basename($poster);
+                    }
 
                     $runtime = $mv['movie_length'] ? (int)$mv['movie_length'].' min' : 'TBA';
                     $year = $mv['release_year'] ?: 'TBA';

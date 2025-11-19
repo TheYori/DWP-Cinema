@@ -9,18 +9,24 @@ $movieCRUD = new MovieCRUD();
 $message = "";
 
 // Handle deletion
-if (isset($_GET['delete'])) {
-    $id = $_GET['delete'];
-    if ($movieCRUD->delete($id)) {
+$deleteId = filter_input(INPUT_GET, 'delete', FILTER_VALIDATE_INT);
+
+if ($deleteId !== null && $deleteId !== false)
+{
+    if ($movieCRUD->delete($deleteId))
+    {
         header("location: movies.php?deleted=1");
         exit;
-    } else {
+    }
+    else
+    {
         $message = "<p class='text-red-400 font-semibold mt-4'>Failed to delete the movie.</p>";
     }
 }
 
 // Handle the create form
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST')
+{
     $title = trim($_POST['title']);
     $movie_length = trim($_POST['movie_length']);
     $debut_date = trim($_POST['debut_date']);
@@ -30,10 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $movie_desc = trim($_POST['movie_desc']);
     $poster = $_FILES['poster'];
 
-    if ($movieCRUD->create($title, $movie_length, $debut_date, $rating, $director, $genre, $movie_desc, $poster)) {
+    if ($movieCRUD->create($title, $movie_length, $debut_date, $rating, $director, $genre, $movie_desc, $poster))
+    {
         header("location: movies.php?success=1");
         exit;
-    } else {
+    }
+    else
+    {
         $message = "<p class='text-red-400 font-semibold mt-4'>Failed to upload the movie. Please check the image and try again.</p>";
     }
 }
@@ -43,10 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $movieList = $movieCRUD->getAllMovies();
 
 // Success messages
-if (isset($_GET['success'])) {
+if (isset($_GET['success']))
+{
     $message = "<p class='text-green-400 font-semibold mt-4'>The movie was added successfully!</p>";
 }
-if (isset($_GET['deleted'])) {
+if (isset($_GET['deleted']))
+{
     $message = "<p class='text-green-400 font-semibold mt-4'>The movie was deleted successfully!</p>";
 }
 ?>

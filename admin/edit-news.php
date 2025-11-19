@@ -10,12 +10,12 @@ $newsCRUD = new NewsCRUD();
 $message = "";
 
 // Validate ID from URL
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+if ($id === false || $id === null) {
     header("Location: news.php");
     exit;
 }
-
-$id = (int)$_GET['id'];
 
 // Fetch current news data
 $news = $newsCRUD->getById($id);

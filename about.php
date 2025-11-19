@@ -21,33 +21,43 @@ $companyAbout = $company->getCompanyInfo($about);
 // Handle contact form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
 {
-    $userName = trim($_POST['name'] ?? '');
-    $userEmail = trim($_POST['email'] ?? '');
-    $subject = trim($_POST['subject'] ?? 'General Inquiry');
-    $message = trim($_POST['message'] ?? '');
+    // Sanitize strings
+    $userName  = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS));
+    $userEmail = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $message   = trim($_POST['message'] ?? '');
 
-    // Basic validation
-    if ($userName && filter_var($userEmail, FILTER_VALIDATE_EMAIL) && $message)
+    // Validate allowed subjects
+    $allowedSubjects = [
+            "General Inquiry",
+            "Film Submission",
+            "Private Event",
+            "Press",
+            "Other"
+    ];
+
+    $subjectRaw = trim($_POST['subject'] ?? 'General Inquiry');
+    $subject = in_array($subjectRaw, $allowedSubjects) ? $subjectRaw : "General Inquiry";
+
+    if ($userName && $userEmail && $message)
     {
         $to = "rickiguldborg40@gmail.com";
         $emailSubject = "Message from a Midnight Scream user: " . htmlspecialchars($subject);
         $body = "From: $userName <$userEmail>\n\nMessage:\n$message";
+
         $headers = "From: Midnight Scream Website <no-reply@midnightscream.dk>\r\n";
         $headers .= "Reply-To: $userEmail\r\n";
         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 
-        // Attempt to send
         if (mail($to, $emailSubject, $body, $headers))
         {
-            // Redirect to avoid resubmission on page refresh
             header("Location: about.php?sent=1");
             exit;
-        } else
-        {
+        } else {
             $error = "Oops! Something went wrong. The crypt might be blocking the message. Try again later.";
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html>

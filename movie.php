@@ -8,28 +8,40 @@ $isLoggedIn = $session->logged_in();
 $movieDisplay = new MovieDisplay();
 
 // 1. Get movie ID from URL
-$movieId = $_GET['id'] ?? null;
+$movieId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-if (!$movieId || !is_numeric($movieId)) {
+if ($movieId === null || $movieId === false)
+{
     die("Invalid movie ID.");
 }
 
 // 2. Load the movie
 $movie = $movieDisplay->getMovieById($movieId);
 
-if (!$movie) {
+if (!$movie)
+{
     die("Movie not found.");
 }
 
 // 3. Process poster path
 $poster = $movie['poster'];
 
-if (empty($poster)) {
+// Block directory traversal
+$poster = trim($poster);
+
+if (empty($poster))
+{
     $posterPath = "images/movies/placeholder.jpg";
-} elseif (str_starts_with($poster, "images/") || str_starts_with($poster, "/images/")) {
+
+} elseif (filter_var($poster, FILTER_VALIDATE_URL)) {
+    // Allow external image URLs
     $posterPath = $poster;
-} else {
-    $posterPath = "images/movies/" . $poster;
+
+}
+else
+{
+    // Force file to remain inside /images/movies/
+    $posterPath = "images/movies/" . basename($poster);
 }
 ?>
 

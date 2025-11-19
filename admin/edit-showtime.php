@@ -8,12 +8,13 @@ $session->confirm_logged_in();
 $showtimeCRUD = new ShowtimeCRUD();
 
 // Get the ID from the URL
-if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+$showtimeId = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if ($showtimeId === false || $showtimeId === null) {
     header("Location: showtimes.php");
     exit;
 }
 
-$id = (int)$_GET['id'];
+$id = $showtimeId;
 
 // Get showtime info
 $showtime = $showtimeCRUD->getShowtimeById($id);
