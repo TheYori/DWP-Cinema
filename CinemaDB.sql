@@ -210,6 +210,25 @@ DELIMITER ;
 
 
 
+-- SQL INDEXES --
+-- As the amount of tickets will grow large over time a normal query will get slow
+-- Using an Index will speed up loading the booking page and checks
+CREATE INDEX idx_tickets_showtime
+ON Tickets (showtime_id);
+
+-- Without an index all tables have to be scanned
+-- With index this process is much faster and the larger amount of seats the faster it will be
+CREATE INDEX idx_seats_hall
+ON Seats (hall_id);
+
+-- As tickets is one of the fastest growing tables it could benefit for optimization
+-- This index helps speed up the queries that joint seat names with the tickets.
+CREATE INDEX idx_will_have_seat
+ON Will_have (seat_id);
+
+
+
+
 
 -- ADMIN DATA --
 -- There need to be an existing Admin to create an admin.
