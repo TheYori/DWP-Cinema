@@ -14,17 +14,8 @@ class MovieDisplay
     {
         try {
             $sql = "
-                SELECT 
-                    m.movie_id,
-                    m.title,
-                    m.movie_desc,
-                    m.movie_length,
-                    m.debut_date,
-                    YEAR(m.debut_date) AS release_year,
-                    m.rating,
-                    m.director,
-                    m.genre,
-                    m.poster
+                SELECT m.movie_id, m.title,m.movie_desc, m.movie_length, m.debut_date,
+                YEAR(m.debut_date) AS release_year, m.rating, m.director, m.genre, m.poster
                 FROM Movies m
                 ORDER BY m.debut_date DESC, m.title ASC";
             $stmt = $this->conn->prepare($sql);

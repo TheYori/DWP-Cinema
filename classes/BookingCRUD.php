@@ -16,7 +16,8 @@ class BookingCRUD
     public function getAllBookings()
     {
         $query = $this->db->prepare("
-            SELECT t.ticket_id, t.ticket_date, t.ticket_time, u.first_name, u.last_name, m.title AS movie_title, s.show_date, s.show_time, h.hall_name,
+            SELECT t.ticket_id, t.ticket_date, t.ticket_time, u.first_name, u.last_name, m.title 
+                AS movie_title, s.show_date, s.show_time, h.hall_name,
                 GROUP_CONCAT(se.seat_name ORDER BY se.seat_name SEPARATOR ', ') AS seats
             FROM Tickets t
             INNER JOIN Users u ON t.user_id = u.user_id
@@ -27,7 +28,7 @@ class BookingCRUD
             INNER JOIN Seats se ON w.seat_id = se.seat_id
             GROUP BY t.ticket_id
             ORDER BY t.ticket_date DESC, t.ticket_time DESC
-        ");
+            ");
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }

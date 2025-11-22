@@ -11,19 +11,22 @@ $message = "";
 // Validate ID
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
-if ($id === null || $id === false) {
+if ($id === null || $id === false)
+{
     header("Location: movies.php");
     exit;
 }
 
 $movie = $movieCRUD->getMovieById($id);
 
-if (!$movie) {
+if (!$movie)
+{
     $message = "<p class='text-red-400 font-semibold mt-4'>Movie not found.</p>";
 }
 
 // Handle update form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
     $title = trim($_POST['title']);
     $movie_length = trim($_POST['movie_length']);
     $debut_date = $_POST['debut_date'];
