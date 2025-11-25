@@ -10,7 +10,7 @@ $hours = "Opening Hours:";
 $address = "Company Address:";
 $email = "Company Email:";
 $number = "Company Phone number:";
-$about = "Midnight Scream – Where Horror Never Sleeps";
+$about = "Midnight Scream: Where Horror Never Sleeps";
 
 $openHours = $company->getCompanyInfo($hours);
 $companyAddress = $company->getCompanyInfo($address);
@@ -18,15 +18,23 @@ $companyEmail = $company->getCompanyInfo($email);
 $companyPhone = $company->getCompanyInfo($number);
 $companyAbout = $company->getCompanyInfo($about);
 
-// Handle contact form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST')
-{
-    // Sanitize strings
+// PHPMailer (load from PHPMailer-master SRC folder)
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require __DIR__ . "/PHPMailer-master/src/PHPMailer.php";
+require __DIR__ . "/PHPMailer-master/src/SMTP.php";
+require __DIR__ . "/PHPMailer-master/src/Exception.php";
+
+// Handle contact form
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // Sanitize inputs
     $userName  = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS));
     $userEmail = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     $message   = trim($_POST['message'] ?? '');
 
-    // Validate allowed subjects
+    // Allowed subjects
     $allowedSubjects = [
             "General Inquiry",
             "Film Submission",
@@ -38,22 +46,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $subjectRaw = trim($_POST['subject'] ?? 'General Inquiry');
     $subject = in_array($subjectRaw, $allowedSubjects) ? $subjectRaw : "General Inquiry";
 
-    if ($userName && $userEmail && $message)
-    {
-        $to = "rickiguldborg40@gmail.com";
-        $emailSubject = "Message from a Midnight Scream user: " . htmlspecialchars($subject);
-        $body = "From: $userName <$userEmail>\n\nMessage:\n$message";
+    // Only send if valid
+    if ($userName && $userEmail && $message) {
 
-        $headers = "From: Midnight Scream Website <no-reply@midnightscream.dk>\r\n";
-        $headers .= "Reply-To: $userEmail\r\n";
-        $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+        $mail = new PHPMailer(true);
 
-        if (mail($to, $emailSubject, $body, $headers))
-        {
+        try {
+            // SMTP settings (Simply.com)
+            $mail->isSMTP();
+            $mail->Host       = "websmtp.simply.com";
+            $mail->SMTPAuth   = true;
+            $mail->Username   = "no-reply@matwijkiweducation.com";
+            $mail->Password   = "matwijkiw123456";
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = 587;
+
+            // Email headers
+            $mail->setFrom("no-reply@matwijkiweducation.com", "Midnight Scream Website");
+            $mail->addAddress("support@matwijkiweducation.com");
+
+            $mail->addReplyTo($userEmail, $userName);
+
+            // Email content
+            $mail->isHTML(false);
+            $mail->Subject = "Message from Midnight Scream user: " . $subject;
+            $mail->Body    = "From: $userName <$userEmail>\n\nMessage:\n$message";
+
+            $mail->send();
             header("Location: about.php?sent=1");
             exit;
-        } else {
-            $error = "Oops! Something went wrong. The crypt might be blocking the message. Try again later.";
+
+        } catch (Exception $e) {
+            $error = "Mailer Error: " . $mail->ErrorInfo;
         }
     }
 }
