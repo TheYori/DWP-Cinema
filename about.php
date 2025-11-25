@@ -27,7 +27,8 @@ require __DIR__ . "/PHPMailer-master/src/SMTP.php";
 require __DIR__ . "/PHPMailer-master/src/Exception.php";
 
 // Handle contact form
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST')
+{
 
     // Sanitize inputs
     $userName  = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS));
@@ -47,22 +48,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = in_array($subjectRaw, $allowedSubjects) ? $subjectRaw : "General Inquiry";
 
     // Only send if valid
-    if ($userName && $userEmail && $message) {
+    if ($userName && $userEmail && $message)
+    {
 
         $mail = new PHPMailer(true);
 
-        try {
+        try
+        {
             // SMTP settings (Simply.com)
             $mail->isSMTP();
-            $mail->Host       = "websmtp.simply.com";
+            $mail->Host       = SMTP_HOST;
             $mail->SMTPAuth   = true;
-            $mail->Username   = "no-reply@matwijkiweducation.com";
-            $mail->Password   = "matwijkiw123456";
+            $mail->Username   = SMTP_USER;
+            $mail->Password   = SMTP_PASS;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            $mail->Port       = SMTP_PORT;
 
             // Email headers
-            $mail->setFrom("no-reply@matwijkiweducation.com", "Midnight Scream Website");
+            $mail->setFrom(SMTP_USER, "Midnight Scream Website");
             $mail->addAddress("support@matwijkiweducation.com");
 
             $mail->addReplyTo($userEmail, $userName);
@@ -76,7 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: about.php?sent=1");
             exit;
 
-        } catch (Exception $e) {
+        }
+        catch (Exception $e)
+        {
             $error = "Mailer Error: " . $mail->ErrorInfo;
         }
     }
