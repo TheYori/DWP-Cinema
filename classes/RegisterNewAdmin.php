@@ -14,9 +14,12 @@ class RegisterNewAdmin
         $hashed_password = password_hash($pass, PASSWORD_BCRYPT, $iterations);
         $query = $db->databaseCon->prepare("INSERT INTO `admins` (first_name, last_name, username, admin_password) VALUES ('{$fname}', '{$lname}', '{$user}', '{$hashed_password}')");
 
-        if ($query->execute()) {
+        if ($query->execute())
+        {
             $this->message = "User Created.";
-        } else {
+        }
+        else
+        {
             $this->message = "User could not be created.";
         }
         $db->DatabaseClose();

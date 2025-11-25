@@ -21,10 +21,12 @@ $rawShowings = $showtimeView->getAllShowings();
 // Group rows into movies → showtimes
 $moviesToShow = [];
 
-foreach ($rawShowings as $row) {
+foreach ($rawShowings as $row)
+{
     $movieId = $row['movie_id'];
 
-    if (!isset($moviesToShow[$movieId])) {
+    if (!isset($moviesToShow[$movieId]))
+    {
         $moviesToShow[$movieId] = [
                 'movie' => [
                         'title'        => $row['movie_title'],

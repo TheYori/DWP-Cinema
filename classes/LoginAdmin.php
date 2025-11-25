@@ -11,7 +11,8 @@ class LoginAdmin
         if($query->execute())
         {
             $found_user = $query->fetchAll();
-            if (count($found_user)==1){
+            if (count($found_user)==1)
+            {
                 if(password_verify($pass, $found_user[0]['admin_password']))
                 {
                     $_SESSION['admin_id'] = $found_user[0]['admin_id'];

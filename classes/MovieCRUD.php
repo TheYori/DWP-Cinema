@@ -30,7 +30,8 @@ class MovieCRUD
     public function create($title, $movie_length, $debut_date, $rating, $director, $genre, $movie_desc, $poster)
     {
         $poster = $this->handleImageUpload($poster);
-        if ($poster === false) {
+        if ($poster === false)
+        {
             return false;
         }
 

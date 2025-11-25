@@ -43,7 +43,8 @@ class CompanyCRUD
     // crUd - Updates selected data in Company Table
     public function update($id, $data_key, $key_value)
     {
-        try {
+        try
+        {
             $sql = "UPDATE Company SET data_key = :data_key, key_value = :key_value WHERE key_id = :id";
 
             $stmt = $this->db->prepare($sql);

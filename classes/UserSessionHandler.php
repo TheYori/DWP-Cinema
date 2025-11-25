@@ -3,7 +3,8 @@ class UserSessionHandler
 {
     public function __construct()
     {
-        if (session_status() === PHP_SESSION_NONE) {
+        if (session_status() === PHP_SESSION_NONE)
+        {
             session_start();
         }
     }
@@ -15,7 +16,8 @@ class UserSessionHandler
 
     public function confirm_logged_in()
     {
-        if (!$this->logged_in()) {
+        if (!$this->logged_in())
+        {
             $redirect = new Redirector("login.php");
         }
     }

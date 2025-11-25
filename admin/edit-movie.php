@@ -36,10 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
     $movie_desc = $_POST['movie_desc'];
     $poster = $_FILES['poster'];
 
-    if ($movieCRUD->update($id, $title, $movie_length, $debut_date, $rating, $director, $genre, $movie_desc, $poster)) {
+    if ($movieCRUD->update($id, $title, $movie_length, $debut_date, $rating, $director, $genre, $movie_desc, $poster))
+    {
         header("Location: movies.php?updated=1");
         exit;
-    } else {
+    }
+    else
+    {
         $message = "<p class='text-red-400 font-semibold mt-4'>Failed to update movie. Please check inputs or image.</p>";
     }
 }

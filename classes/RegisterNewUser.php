@@ -19,7 +19,8 @@ class RegisterNewUser
         // Create database connection
         $db = new DatabaseCon();
 
-        try {
+        try
+        {
             // Begin transaction to keep data consistent
             $db->databaseCon->beginTransaction();
 
@@ -30,7 +31,8 @@ class RegisterNewUser
 
             // If postal code doesn’t exist, insert it with the provided city
             // This check should be redundant, but nice to have in case it develops into a global chain I guess
-            if ($checkPostal->rowCount() === 0) {
+            if ($checkPostal->rowCount() === 0)
+            {
                 $insertPostal = $db->databaseCon->prepare("INSERT INTO PostalCodes (postal_code, city) VALUES (:postal_code, :city)");
                 $insertPostal->bindParam(':postal_code', $postalCode, PDO::PARAM_INT);
                 $insertPostal->bindParam(':city', $city, PDO::PARAM_STR);
@@ -63,14 +65,19 @@ class RegisterNewUser
             $query->bindParam(':postal_code', $san_postalCode, PDO::PARAM_INT);
             $query->bindParam(':password', $hashed_password);
 
-            if ($query->execute()) {
+            if ($query->execute())
+            {
                 $db->databaseCon->commit();
                 $this->message = "User registered successfully.";
-            } else {
+            }
+            else
+            {
                 $db->databaseCon->rollBack();
                 $this->message = "User could not be registered.";
             }
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e)
+        {
             $db->databaseCon->rollBack();
             $this->message = "Database error: " . $e->getMessage();
         }

@@ -12,7 +12,8 @@ class MovieDisplay
     // All movies
     public function getAllMovies(): array
     {
-        try {
+        try
+        {
             $sql = "
                 SELECT m.movie_id, m.title,m.movie_desc, m.movie_length, m.debut_date,
                 YEAR(m.debut_date) AS release_year, m.rating, m.director, m.genre, m.poster
@@ -21,7 +22,9 @@ class MovieDisplay
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
-        } catch (PDOException $e) {
+        }
+        catch (PDOException $e)
+        {
             error_log('MovieDisplay::getAllMovies error: '.$e->getMessage());
             return [];
         }
