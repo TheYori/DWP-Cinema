@@ -164,7 +164,7 @@ $moviesToShow = array_values($moviesToShow); // reset array keys
 </nav>
 <!-- Enhanced Scary Banner -->
 <div id="banner" class="relative overflow-hidden h-[600px]">
-    <div class="absolute inset-0 bg-[url('http://static.photos/horror/1200x630/666')] bg-cover bg-center opacity-20"></div>
+    <div class="absolute inset-0 bg-[url('images/homepage/banner1.jpg')] bg-cover bg-center opacity-20"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/40 z-10"></div>
     <div class="absolute inset-0 flex flex-col items-center justify-center z-20 px-4">
         <div class="text-center">
@@ -199,12 +199,12 @@ $moviesToShow = array_values($moviesToShow); // reset array keys
 
 <!-- Enhanced Presentation Section -->
 <section class="py-20 relative overflow-hidden purple-light">
-    <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('http://static.photos/horror/1200x630/13')] bg-cover bg-center"></div>
+    <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('images/homepage/banner2.jpg')] bg-cover bg-center"></div>
     <div class="container mx-auto px-6 relative z-10">
         <div class="max-w-5xl mx-auto">
             <div class="flex flex-col lg:flex-row items-center gap-12">
                 <div class="lg:w-1/2">
-                    <img src="http://static.photos/horror/800x450/666" alt="Theater" class="rounded-lg shadow-2xl w-full">
+                    <img src="images/homepage/logo.png" alt="Theater" class="rounded-lg  w-full">
                 </div>
                 <div class="lg:w-1/2">
                     <h2 class="horror-font text-5xl blood-red mb-6">
