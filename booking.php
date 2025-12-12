@@ -130,10 +130,24 @@ $seats = $booking->getSeats($showtime['hall_id'], $showtime_id);
                     <a href="login.php" class="text-white hover:text-purple-300">Login</a>
                 <?php endif; ?>
             </div>
-            <div class="md:hidden">
-                <button class="text-white focus:outline-none">
+            <div class="md:hidden relative z-50">
+                <button id="mobile-menu-button" type="button" class="text-white focus:outline-none">
                     <i data-feather="menu"></i>
                 </button>
+
+                <div id="mobile-menu" class="hidden fixed inset-0 purple-dark z-50 pt-20">
+                    <div class="flex flex-col items-center space-y-6 text-xl">
+                        <a href="index.php" class="text-white hover:text-purple-300">Home</a>
+                        <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
+                        <a href="news.php" class="text-white hover:text-purple-300">News</a>
+                        <a href="about.php" class="text-white hover:text-purple-300">About Us</a>
+                        <?php if ($isLoggedIn): ?>
+                            <a href="profile.php" class="text-white hover:text-purple-300">Profile</a>
+                        <?php else: ?>
+                            <a href="login.php" class="text-white hover:text-purple-300">Login</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -396,6 +410,32 @@ $seats = $booking->getSeats($showtime['hall_id'], $showtime_id);
         });
 
     });
+</script>
+
+<script>
+    feather.replace();
+
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.contains(event.target) && event.target !== mobileMenuButton) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    }
 </script>
 </body>
 </html>

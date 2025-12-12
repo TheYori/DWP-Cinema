@@ -61,8 +61,6 @@ $moviesToShow = array_values($moviesToShow); // reset array keys
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.fog.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Creepster&family=EB+Garamond:wght@400;700&display=swap');
         @keyframes flicker {
@@ -119,6 +117,9 @@ $moviesToShow = array_values($moviesToShow); // reset array keys
                 box-shadow: 0 0 200px 100px rgba(255, 255, 255, 0.9);
             }
         }
+        #banner canvas {
+            pointer-events: none !important;
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -142,14 +143,16 @@ $moviesToShow = array_values($moviesToShow); // reset array keys
                     <a href="login.php" class="text-white hover:text-purple-300">Login</a>
                 <?php endif; ?>
             </div>
-            <div class="md:hidden">
-                <button id="mobile-menu-button" class="text-white focus:outline-none">
+            <div class="md:hidden relative z-50">
+                <button id="mobile-menu-button" type="button" class="text-white focus:outline-none">
                     <i data-feather="menu"></i>
                 </button>
+
                 <div id="mobile-menu" class="hidden fixed inset-0 purple-dark z-50 pt-20">
                     <div class="flex flex-col items-center space-y-6 text-xl">
                         <a href="index.php" class="text-white hover:text-purple-300">Home</a>
                         <a href="movies.php" class="text-white hover:text-purple-300">Movies</a>
+                        <a href="news.php" class="text-white hover:text-purple-300">News</a>
                         <a href="about.php" class="text-white hover:text-purple-300">About Us</a>
                         <?php if ($isLoggedIn): ?>
                             <a href="profile.php" class="text-white hover:text-purple-300">Profile</a>
@@ -204,7 +207,7 @@ $moviesToShow = array_values($moviesToShow); // reset array keys
         <div class="max-w-5xl mx-auto">
             <div class="flex flex-col lg:flex-row items-center gap-12">
                 <div class="lg:w-1/2">
-                    <img src="images/homepage/logo.png" alt="Theater" class="rounded-lg  w-full">
+                    <img src="images/homepage/logo.png" alt="Theater" class="rounded-lg w-full">
                 </div>
                 <div class="lg:w-1/2">
                     <h2 class="horror-font text-5xl blood-red mb-6">
@@ -328,37 +331,29 @@ $moviesToShow = array_values($moviesToShow); // reset array keys
 </footer>
 
 <script>
-    // Initialize Vanta.js effect
-    VANTA.FOG({
-        el: "#banner",
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        highlightColor: 0xff0000,
-        midtoneColor: 0x8b0000,
-        lowlightColor: 0x000000,
-        baseColor: 0x000000,
-        blurFactor: 0.70,
-        speed: 2.50,
-        zoom: 0.80
-    });
-    // Initialize feather icons
     feather.replace();
-    // Mobile menu toggle
+
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-    // Close menu when clicking outside
-    document.addEventListener('click', (event) => {
-        if (!mobileMenu.contains(event.target) && event.target !== mobileMenuButton) {
-            mobileMenu.classList.add('hidden');
-        }
-    });
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.contains(event.target) && event.target !== mobileMenuButton) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    }
 </script>
 </body>
 </html>

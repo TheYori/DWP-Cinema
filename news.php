@@ -67,10 +67,11 @@ $newsList = $newsDisplay->getPublishedNews();
                     <a href="login.php" class="text-white hover:text-purple-300">Login</a>
                 <?php endif; ?>
             </div>
-            <div class="md:hidden">
-                <button id="mobile-menu-button" class="text-white focus:outline-none">
+            <div class="md:hidden relative z-50">
+                <button id="mobile-menu-button" type="button" class="text-white focus:outline-none">
                     <i data-feather="menu"></i>
                 </button>
+
                 <div id="mobile-menu" class="hidden fixed inset-0 purple-dark z-50 pt-20">
                     <div class="flex flex-col items-center space-y-6 text-xl">
                         <a href="index.php" class="text-white hover:text-purple-300">Home</a>
@@ -169,19 +170,28 @@ $newsList = $newsDisplay->getPublishedNews();
 
 <script>
     feather.replace();
-    // Mobile menu toggle
+
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    mobileMenuButton.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-    // Close menu when clicking outside
-    document.addEventListener('click', (event) => {
-        if (!mobileMenu.contains(event.target) && event.target !== mobileMenuButton) {
-            mobileMenu.classList.add('hidden');
-        }
-    });
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close menu when clicking a link
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.contains(event.target) && event.target !== mobileMenuButton) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    }
 </script>
 </body>
 </html>
